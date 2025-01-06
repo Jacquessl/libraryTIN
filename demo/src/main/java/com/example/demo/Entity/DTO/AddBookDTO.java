@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 @Getter
 public class AddBookDTO {
-    private int id;
     private String title;
     private Category category;
     private int publishedYear;
@@ -17,7 +16,6 @@ public class AddBookDTO {
     private Set<Integer> authorsIds;
 
     public AddBookDTO(Book book) {
-        this.id = book.getBookId();
         this.title = book.getTitle();
         this.category = book.getCategory();
         this.publishedYear = book.getPublishedYear();

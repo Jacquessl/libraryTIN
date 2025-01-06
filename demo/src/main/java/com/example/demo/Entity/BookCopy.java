@@ -21,7 +21,7 @@ public class BookCopy {
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
-    @Column(name = "condition_status", nullable = false, columnDefinition = "ENUM('NEW', 'GOOD', 'WORN', 'DAMAGED')")
+    @Column(name = "condition_status", nullable = false, columnDefinition = "ENUM('New', 'Good', 'Worn', 'Damaged')")
     @Enumerated(EnumType.STRING)
     private ConditionStatus conditionStatus;
     private boolean available;
