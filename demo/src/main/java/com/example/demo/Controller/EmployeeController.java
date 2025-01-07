@@ -1,11 +1,10 @@
 package com.example.demo.Controller;
 
+import com.example.demo.Entity.DTO.AddEmployeeDTO;
 import com.example.demo.Entity.Employee;
 import com.example.demo.Service.EmployeeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +32,22 @@ public class EmployeeController {
             return employeeService.getEmployeesByPosition(position);
         }
         return employeeService.getAllEmployees();
+    }
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable int id){
+        return employeeService.getEmployeeById(id);
+    }
+    @PostMapping("/add")
+    public ResponseEntity<Employee> addEmployee(@RequestBody AddEmployeeDTO employee){
+        //todo nie moze byc taki sam username/password dla employee i user
+        return employeeService.addEmployee(employee);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable int id){
+        return employeeService.deleteEmployee(id);
+    }
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Employee> editEmployee(@PathVariable int id, @RequestBody AddEmployeeDTO employee){
+        return employeeService.editEmployee(id, employee);
     }
 }

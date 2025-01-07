@@ -2,8 +2,10 @@ package com.example.demo.Service;
 
 import com.example.demo.Entity.DTO.AddUserDTO;
 import com.example.demo.Entity.User;
+import com.example.demo.Repository.EmployeeRepositoryInterface;
 import com.example.demo.Repository.UserRepositoryInterface;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -13,12 +15,14 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepositoryInterface userRepository;
+    private final EmployeeRepositoryInterface employeeRepository;
 
-    public UserService(UserRepositoryInterface userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepositoryInterface userRepository, PasswordEncoder passwordEncoder, EmployeeRepositoryInterface employeeRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
+        this.employeeRepository = employeeRepository;
     }
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -36,15 +40,18 @@ public class UserService {
         return userRepository.findUsersByUsernameContaining(username);
     }
     public ResponseEntity<User> addUser(AddUserDTO userDTO) {
-        User user = new User();
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setEmail(userDTO.getEmail());
-        user.setPhone(userDTO.getPhone());
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
+        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()) == null) {
+            User user = new User();
+            user.setFirstName(userDTO.getFirstName());
+            user.setLastName(userDTO.getLastName());
+            user.setUsername(userDTO.getUsername());
+            user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
+            user.setEmail(userDTO.getEmail());
+            user.setPhone(userDTO.getPhone());
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.ok(savedUser);
+        }
+        return ResponseEntity.badRequest().build();
     }
     public ResponseEntity<String> deleteUser(int id) {
         //TODO if statement for checking active user loans
@@ -57,7 +64,7 @@ public class UserService {
             user.get().setFirstName(userDTO.getFirstName());
             user.get().setLastName(userDTO.getLastName());
             user.get().setUsername(userDTO.getUsername());
-            user.get().setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            user.get().setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
             user.get().setEmail(userDTO.getEmail());
             user.get().setPhone(userDTO.getPhone());
             User updatedUser = userRepository.save(user.get());

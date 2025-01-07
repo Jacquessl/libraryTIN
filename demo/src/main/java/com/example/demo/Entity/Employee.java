@@ -29,7 +29,7 @@ public class Employee {
     private String position;
     private String username;
     @JsonIgnore
-    private String password;
+    private String passwordHash;
     @Column(name = "role", nullable = false, columnDefinition = "ENUM('librarian', 'manager')")
     @Enumerated(EnumType.STRING)
     private Role role;

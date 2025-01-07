@@ -41,6 +41,7 @@ public class UserController {
     }
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody AddUserDTO user){
+        //todo nie moze byc taki sam username dla employee i user
         return userService.addUser(user);
     }
     @DeleteMapping("/delete/{id}")

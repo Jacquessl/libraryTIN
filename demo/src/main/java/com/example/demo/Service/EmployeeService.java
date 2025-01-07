@@ -1,7 +1,10 @@
 package com.example.demo.Service;
 
+import com.example.demo.Entity.DTO.AddEmployeeDTO;
 import com.example.demo.Entity.Employee;
 import com.example.demo.Repository.EmployeeRepositoryInterface;
+import com.example.demo.Repository.UserRepositoryInterface;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +13,11 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepositoryInterface employeeRepository;
+    private final UserRepositoryInterface userRepository;
 
-    public EmployeeService(EmployeeRepositoryInterface employeeRepository) {
+    public EmployeeService(EmployeeRepositoryInterface employeeRepository, UserRepositoryInterface userRepository) {
         this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
     }
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -25,5 +30,49 @@ public class EmployeeService {
     }
     public List<Employee> getEmployeesByPosition(String position){
         return employeeRepository.findEmployeesByPosition(position);
+    }
+    public Employee getEmployeeById(int id){
+        return employeeRepository.findById(id).get();
+    }
+    public ResponseEntity<Employee> addEmployee(AddEmployeeDTO employee){
+        if(userRepository.findUserByUsernameOrEmail(employee.getUsername(), employee.getEmail()) == null) {
+            Employee employeeToAdd = new Employee();
+            employeeToAdd.setFirstName(employee.getFirstName());
+            employeeToAdd.setLastName(employee.getLastName());
+            employeeToAdd.setPosition(employee.getPosition());
+            employeeToAdd.setEmail(employee.getEmail());
+            employeeToAdd.setPasswordHash(employee.getPassword());
+            employeeToAdd.setRole(employee.getRole());
+            employeeToAdd.setHireDate(employee.getHireDate());
+            employeeToAdd.setPhone(employee.getPhone());
+            employeeToAdd.setUsername(employee.getUsername());
+            Employee addedEmployee = employeeRepository.save(employeeToAdd);
+            return ResponseEntity.ok(addedEmployee);
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    public ResponseEntity<String> deleteEmployee(int id){
+        if(employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+            return ResponseEntity.ok("Employee deleted successfully");
+        }
+        return ResponseEntity.notFound().build();
+    }
+    public ResponseEntity<Employee> editEmployee(int id, AddEmployeeDTO employeeDTO) {
+        if(employeeRepository.existsById(id)) {
+            Employee employeeToEdit = employeeRepository.findById(id).get();
+            employeeToEdit.setFirstName(employeeDTO.getFirstName());
+            employeeToEdit.setLastName(employeeDTO.getLastName());
+            employeeToEdit.setPosition(employeeDTO.getPosition());
+            employeeToEdit.setEmail(employeeDTO.getEmail());
+            employeeToEdit.setPasswordHash(employeeDTO.getPassword());
+            employeeToEdit.setRole(employeeDTO.getRole());
+            employeeToEdit.setHireDate(employeeDTO.getHireDate());
+            employeeToEdit.setPhone(employeeDTO.getPhone());
+            employeeToEdit.setUsername(employeeDTO.getUsername());
+            Employee updatedEmployee = employeeRepository.save(employeeToEdit);
+            return ResponseEntity.ok(updatedEmployee);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

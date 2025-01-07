@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,9 +26,9 @@ public class Loan {
     @ManyToOne
     @JoinColumn(name = "copy_id", nullable = false)
     private BookCopy copy;
-    private Date loanDate;
-    private Date dueDate;
-    private Date returnDate;
+    private LocalDateTime loanDate;
+    private LocalDateTime dueDate;
+    private LocalDateTime returnDate;
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;

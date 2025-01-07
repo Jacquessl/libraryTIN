@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservations")
@@ -25,5 +25,5 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
-    private Date reservationDate;
+    private LocalDateTime reservationDate;
 }
