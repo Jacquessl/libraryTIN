@@ -9,4 +9,5 @@ import java.util.List;
 public interface BookCopyRepositoryInterface extends JpaRepository<BookCopy, Integer> {
     List<BookCopy> findByBook(Book book);
     List<BookCopy> findByAvailable(boolean available);
+    BookCopy findByCopyId(int copyId);
 }

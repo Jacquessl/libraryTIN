@@ -11,6 +11,8 @@ import {Books} from "./Components/Books";
 import {Book} from "./Components/Book";
 import {Category} from "./Components/Category";
 import {BookCopy} from "./Components/BookCopy";
+import {RegisterForm} from "./Components/RegisterForm";
+import {BookCopyAvailable} from "./Components/BookCopyAvailable";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
                     <Route path="/categories" element={<Category />}/>
                     <Route path="/book/:id" element={<Book />}/>
                     <Route path="/bookCopy" element={<BookCopy/>}/>
+                  <Route path="/register" element={<RegisterForm/>}/>
+                  <Route path="/bookCopy/available/:id" element={<BookCopyAvailable/>}/>
                 </Routes>
               <Footer/>
             </BrowserRouter>

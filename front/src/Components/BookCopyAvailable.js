@@ -1,35 +1,36 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
-import {fetchBookCopy} from "../Service/BookCopyService";
-import {AuthContext} from "./AuthContext";
+import {fetchAvailableBookCopyById} from "../Service/BookCopyService";
 import {LanguageContext} from "../LanguageAppContext";
+import {AuthContext} from "./AuthContext";
 import {BookCopyItem} from "./BookCopyItem";
 
-export const BookCopy = () => {
-    const location = useLocation()
-    const [bookCopy, setBookCopy] = useState([]);
-    const {logout} = useContext(AuthContext);
+export const BookCopyAvailable = () => {
+    const {id} = useParams();
+    const location = useLocation();
     const {translate} = useContext(LanguageContext);
+    const [books, setBooks] = useState([]);
+    const {logout} = useContext(AuthContext);
     const [hoveredBook, setHoveredBook] = useState(null);
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-    }
+
     useEffect(() => {
         async function fetchData(token) {
-            await fetchBookCopy(token).then((bookCopy) => {
-                if(bookCopy === "problem"){
+            await fetchAvailableBookCopyById(token, id).then((response) => {
+                if(response === "problem"){
                     logout();
                 }
                 else {
-                    setBookCopy(bookCopy)
+                    setBooks(response)
                 }
-            });
+            })
         }
-        const token = localStorage.getItem("token");
-        fetchData(token);
-    }, [location])
-    return (<div className="book-list">
-        {bookCopy.map((bookCopy) => (
+        fetchData(localStorage.getItem("token"));
+    }, [location]);
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
+    return(<div className="book-list">
+        {books.map((bookCopy) => (
             <BookCopyItem
                 key={bookCopy.book.isbn}
                 bookCopy={bookCopy}

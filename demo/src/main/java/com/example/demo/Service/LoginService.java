@@ -39,6 +39,6 @@ public class LoginService {
                 return jwtUtil.generateToken(employeeLogging.getUsername(), employeeLogging.getPosition());
             }
         }
-        return null;
+        return "wrong username or password";
     }
 }

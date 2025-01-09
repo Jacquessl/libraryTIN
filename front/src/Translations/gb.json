@@ -20,5 +20,10 @@
   "position": "position",
   "cityLibrary": "City Library",
   "title": "title",
-  "publishedYear": "published year"
+  "publishedYear": "published year",
+  "wrongUsernameOrPassword": "wrong username or password",
+  "dontHaveAccountYet?": "Don't have account yet? Register Now!",
+  "reserve": "reserve",
+  "condition": "condition",
+  "checkAvailability": "check availability"
 }

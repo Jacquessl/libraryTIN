@@ -20,5 +20,10 @@
   "position": "stanowisko",
   "cityLibrary": "Biblioteka Miejska",
   "title": "tytuł",
-  "publishedYear": "rok wydania"
+  "publishedYear": "rok wydania",
+  "wrongUsernameOrPassword": "błędna nazwa użytkownika lub hasło",
+  "dontHaveAccountYet?": "Nie masz jeszcze konta? Zarejestruj się!",
+  "reserve": "zarezerwuj",
+  "condition": "stan",
+  "checkAvailability": "sprawdź dostępność"
 }

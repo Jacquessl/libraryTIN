@@ -3,6 +3,8 @@ import {useLocation, useNavigate, useNavigation} from "react-router-dom";
 import {fetchBooks} from "../Service/BookService";
 import {LanguageContext} from "../LanguageAppContext";
 import {AuthContext} from "./AuthContext";
+import {BookItem} from "./BookItem";
+import {BookCopyItem} from "./BookCopyItem";
 
 export const Books = () => {
 
@@ -11,6 +13,8 @@ export const Books = () => {
     const location = useLocation()
     const {translate} = useContext(LanguageContext);
     const navigate = useNavigate();
+    const [hoveredBook, setHoveredBook] = useState(null);
+
 
     useEffect(() => {
         async function fetchData() {
@@ -29,16 +33,24 @@ export const Books = () => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
 
-    return (
-        <div>
-            <h1>{capitalizeFirstLetter(translate("booksList"))}</h1>
-            <ul>
-                {books.map((book) => (
-                    <li onClick={()=>navigate(`/book/${book.id}`)} key={book.id}>
-                        {book.title}
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )
+    return (<div className="book-list">
+        {books.map((book) => (
+            <BookItem
+                key={book.isbn}
+                book={book}
+                onHover={setHoveredBook}
+            />
+        ))}
+
+        {hoveredBook && (
+            <div className="tooltip-fixed">
+                <div className="tooltip-content">
+                    <h3>{hoveredBook.title}</h3>
+                    <p><strong>ISBN:</strong> {hoveredBook.isbn}</p>
+                    <p><strong>{capitalizeFirstLetter(translate("authors"))}:</strong> {hoveredBook.authors.join(", ")}</p>
+                    <p><strong>{capitalizeFirstLetter(translate("publishedYear"))}</strong> {hoveredBook.publishedYear}</p>
+                </div>
+            </div>
+        )}
+    </div>)
 }

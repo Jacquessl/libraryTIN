@@ -96,4 +96,7 @@ public class BookCopyService {
     public List<BookCopyDTO> getAvailableBooks(){
         return bookCopyRepository.findByAvailable(true).stream().map(BookCopyDTO::new).collect(Collectors.toList());
     }
+    public List<BookCopyDTO> getAvailableBooksByBookId(int id){
+        return bookCopyRepository.findByBook(bookRepository.findById(id).get()).stream().map(BookCopyDTO::new).filter(BookCopyDTO::isAvailable).collect(Collectors.toList());
+    }
 }

@@ -61,15 +61,20 @@ public class LoanService {
         return ResponseEntity.status(404).body("Loan not found");
     }
     public ResponseEntity<LoanDTO> createLoan(AddLoanDTO loanDTO){
-        Loan loan = new Loan();
-        loan.setUser(loanDTO.getUser());
-        loan.setCopy(loanDTO.getBookCopy());
-        loan.setLoanDate(loanDTO.getLoanDate());
-        loan.setDueDate(loanDTO.getDueDate());
-        loan.setReturnDate(loanDTO.getReturnDate());
-        loan.setEmployee(loanDTO.getEmployee());
-        Loan addedLoan = loanRepository.save(loan);
-        return ResponseEntity.ok(new LoanDTO(addedLoan));
+        BookCopy bookCopy = bookCopyRepository.findByCopyId(loanDTO.getBookCopy().getCopyId());
+        if(bookCopy.isAvailable()) {
+            bookCopy.setAvailable(false);
+            Loan loan = new Loan();
+            loan.setUser(loanDTO.getUser());
+            loan.setCopy(loanDTO.getBookCopy());
+            loan.setLoanDate(loanDTO.getLoanDate());
+            loan.setDueDate(loanDTO.getDueDate());
+            loan.setReturnDate(loanDTO.getReturnDate());
+            loan.setEmployee(loanDTO.getEmployee());
+            Loan addedLoan = loanRepository.save(loan);
+            return ResponseEntity.ok(new LoanDTO(addedLoan));
+        }
+        return ResponseEntity.badRequest().build();
     }
     public ResponseEntity<LoanDTO> editLoan(int id, AddLoanDTO loanDTO) {
         Loan loan = loanRepository.findById(id).orElse(null);

@@ -59,4 +59,8 @@ public class BookCopyController {
     public List<BookCopyDTO> getAvailableBooks(){
         return bookCopyService.getAvailableBooks();
     }
+    @GetMapping("/available/{id}")
+    public List<BookCopyDTO> getAvailableBooksByBookId(@PathVariable int id){
+        return bookCopyService.getAvailableBooksByBookId(id);
+    }
 }

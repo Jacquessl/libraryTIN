@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useRef, useState} from "react";
 import {LanguageContext} from "../LanguageAppContext";
 import {fetchLogin} from "../Service/LoginService";
 import {useNavigate} from "react-router-dom";
@@ -10,13 +10,19 @@ export const Login = () => {
     const [password, setPassword] = useState("");
     const { translate } = useContext(LanguageContext);
     const navigate = useNavigate();
+    const [showWrong, setShowWrong] = useState(false)
     const submitLogin = async (e) => {
         e.preventDefault();
-        await fetchLogin(emailOrUsername, password).then(() => {
-            const payload = JSON.parse(atob(localStorage.getItem("token").split(".")[1]));
-            localStorage.setItem("ROLE", payload.roles || []);
-            login();
-            navigate("/")
+        await fetchLogin(emailOrUsername, password).then((response) => {
+                if (response === "problem") {
+                    setShowWrong(true);
+                } else {
+                    const payload = JSON.parse(atob(localStorage.getItem("token").split(".")[1]));
+                    localStorage.setItem("ROLE", payload.roles || []);
+                    login();
+                    navigate("/")
+                    setShowWrong(false);
+                }
             }
         );
     }
@@ -33,6 +39,9 @@ export const Login = () => {
                 <input type="password" onChange={handlePasswordChange} placeholder={translate("password")} />
                 <button type="submit">{translate("login")}</button>
             </form>
+            {showWrong &&
+            <span>{translate("wrongUsernameOrPassword")}<br/></span>}
+        <span onClick={()=>navigate("/register")}>{translate("dontHaveAccountYet?")}</span>
         </div>
     )
 }

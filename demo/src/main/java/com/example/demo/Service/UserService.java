@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class UserService {
         return null;
     }
     public ResponseEntity<User> addUser(AddUserDTO userDTO) {
-        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()) == null) {
+        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).isEmpty() && userRepository.findUserByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).isEmpty()) {
             User user = new User();
             user.setFirstName(userDTO.getFirstName());
             user.setLastName(userDTO.getLastName());
@@ -60,9 +61,11 @@ public class UserService {
             user.setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
             user.setEmail(userDTO.getEmail());
             user.setPhone(userDTO.getPhone());
+            user.setRegisteredDate(LocalDateTime.now());
             User savedUser = userRepository.save(user);
             return ResponseEntity.ok(savedUser);
         }
+        System.out.println(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).get().getUsername());
         return ResponseEntity.badRequest().build();
     }
     public ResponseEntity<String> deleteUser(int id) {

@@ -50,7 +50,7 @@ export const Navbar = () => {
                 : <NotLoggedInNavbar/>}
             {isLoggedIn && (
                 <ul className="navbar">
-                    <li onClick={()=>navigate("/bookCopy")}>{capitalizeFirstLetter(translate("loan"))}</li>
+                    <li onClick={()=>navigate("/bookCopy")}>{capitalizeFirstLetter(translate("reserve"))}</li>
                     <li className="user-profile" onClick={() => navigate("/profile")}>
                         <FaUserCircle className="profile-icon"/>
                         <span>{capitalizeFirstLetter(translate("profile"))}</span>

@@ -159,4 +159,106 @@
     display: block;
 }
 
+.book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Dynamiczna siatka */
+    gap: 20px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
+.book-item {
+    background: #34495e; /* Ciemniejszy kolor, pasuje do navbaru */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Zapewnia, że elementy są równomiernie rozmieszczone */
+    color: white; /* Białe napisy dla kontrastu */
+    height: 150px; /* Stała wysokość dla równości */
+    align-items: center;
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: #2c3e50; /* Efekt hover ciemniejszy */
+}
+
+.book-item ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.book-item li {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.book-item button {
+    background-color: #f39c12; /* Dopasowane do przycisku 'Szukaj' */
+    color: white;
+    border: none;
+    padding: 12px 0; /* Stała wysokość */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+    width: 80%; /* Stała szerokość */
+    min-height: 40px; /* Stała wysokość */
+    align-self: center; /* Wyrównanie do środka */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+
+.book-item button:hover {
+    background-color: #e67e22;
+}
+
+
+.tooltip-fixed {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 320px;
+    text-align: center;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.tooltip-content {
+    font-size: 14px;
+}
+
+.tooltip-fixed h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.tooltip-fixed p {
+    margin: 5px 0;
+}

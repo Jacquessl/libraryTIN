@@ -46,7 +46,7 @@ public class UserController {
     public User getUser(@PathVariable int id){
         return userService.getUserById(id);
     }
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody AddUserDTO user){
         return userService.addUser(user);
     }
