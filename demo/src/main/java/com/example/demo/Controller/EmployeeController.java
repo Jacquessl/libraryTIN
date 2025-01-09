@@ -4,6 +4,7 @@ import com.example.demo.Entity.DTO.AddEmployeeDTO;
 import com.example.demo.Entity.Employee;
 import com.example.demo.Service.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,13 +34,16 @@ public class EmployeeController {
         }
         return employeeService.getAllEmployees();
     }
+    @GetMapping("/me")
+    public Employee getEmployee(Authentication authentication){
+        return employeeService.getEmployeeByUsername(authentication);
+    }
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable int id){
         return employeeService.getEmployeeById(id);
     }
     @PostMapping("/add")
     public ResponseEntity<Employee> addEmployee(@RequestBody AddEmployeeDTO employee){
-        //todo nie moze byc taki sam username/password dla employee i user
         return employeeService.addEmployee(employee);
     }
     @DeleteMapping("/delete/{id}")

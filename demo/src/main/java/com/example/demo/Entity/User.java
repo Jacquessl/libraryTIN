@@ -29,4 +29,5 @@ public class User {
     private String passwordHash;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime registeredDate;
+
 }

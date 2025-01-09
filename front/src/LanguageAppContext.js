@@ -1,8 +1,8 @@
 import pl from "./Translations/pl.json"
-import en from "./Translations/en.json"
+import gb from "./Translations/gb.json"
 import {createContext, useEffect, useState} from "react";
 
-const translations = {pl, en};
+const translations = {pl, gb};
 
 export const LanguageContext = createContext();
 

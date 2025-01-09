@@ -8,6 +8,9 @@ import {Login} from "./Components/Login";
 import {Profile} from "./Components/Profile";
 import {AuthProvider} from "./Components/AuthContext";
 import {Books} from "./Components/Books";
+import {Book} from "./Components/Book";
+import {Category} from "./Components/Category";
+import {BookCopy} from "./Components/BookCopy";
 
 function App() {
   return (
@@ -20,7 +23,9 @@ function App() {
                   <Route path="/login" element={<Login />}/>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/books" element={<Books />}/>
-                    {/*<Route path="/categories" element={<Category />}/>*/}
+                    <Route path="/categories" element={<Category />}/>
+                    <Route path="/book/:id" element={<Book />}/>
+                    <Route path="/bookCopy" element={<BookCopy/>}/>
                 </Routes>
               <Footer/>
             </BrowserRouter>

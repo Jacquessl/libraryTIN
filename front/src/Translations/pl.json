@@ -8,5 +8,17 @@
   "books": "książki",
   "categories": "kategorie",
   "authors": "autorzy",
-  "booksList": "lista książek"
+  "booksList": "lista książek",
+  "categoriesList": "Lista kategorii",
+  "profile": "profil",
+  "firstName": "imię",
+  "lastName": "nazwisko",
+  "phone": "numer telefonu",
+  "username": "nazwa użytkownika",
+  "registeredDate": "data rejestracji",
+  "hireDate": "data zatrudnienia",
+  "position": "stanowisko",
+  "cityLibrary": "Biblioteka Miejska",
+  "title": "tytuł",
+  "publishedYear": "rok wydania"
 }

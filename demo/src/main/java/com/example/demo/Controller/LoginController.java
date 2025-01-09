@@ -17,7 +17,6 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        //todo logowanie uzytkowk/pracownik
         return ResponseEntity.ok(loginService.login(loginRequest));
     }
 }

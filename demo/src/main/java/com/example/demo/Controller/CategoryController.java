@@ -1,6 +1,5 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Entity.Category;
 import com.example.demo.Entity.DTO.AddCategoryDTO;
 import com.example.demo.Entity.DTO.CategoryDTO;
 import com.example.demo.Service.CategoryService;
@@ -20,7 +19,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDTO> getCategory(@RequestParam String name) {
+    public List<CategoryDTO> getCategory(@RequestParam(required = false) String name) {
         if(name != null && !name.isEmpty()) {
             return categoryService.getCategoriesByName(name);
         }

@@ -2,8 +2,11 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddUserDTO;
 import com.example.demo.Service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.Entity.User;
 
@@ -31,9 +34,13 @@ public class UserController {
             return userService.getUserByLastName(lastName);
         }
         if(username != null && !username.isEmpty()){
-            return userService.getUserByUsername(username);
+            return userService.getUserByUsernameContaining(username);
         }
         return userService.getAllUsers();
+    }
+    @GetMapping("/me")
+    public User getMe(Authentication authentication){
+        return userService.getUserByUsername(authentication);
     }
     @GetMapping("/{id}")
     public User getUser(@PathVariable int id){
@@ -41,7 +48,6 @@ public class UserController {
     }
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody AddUserDTO user){
-        //todo nie moze byc taki sam username dla employee i user
         return userService.addUser(user);
     }
     @DeleteMapping("/delete/{id}")

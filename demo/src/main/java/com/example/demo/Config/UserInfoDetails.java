@@ -1,5 +1,6 @@
-package com.example.demo.Component;
+package com.example.demo.Config;
 
+import com.example.demo.Entity.Employee;
 import com.example.demo.Entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,14 @@ public class UserInfoDetails implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
+    public UserInfoDetails(Employee employee) {
+        this.username = employee.getUsername();
+        this.password = employee.getPasswordHash();
+        this.authorities = List.of(employee.getPosition().split(","))
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -28,11 +37,11 @@ public class UserInfoDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return username;
     }
 }

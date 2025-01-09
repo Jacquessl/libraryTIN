@@ -2,14 +2,17 @@ import {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {LanguageContext} from "../LanguageAppContext";
 import {fetchBooksContaingName} from "../Service/BookService";
+import {AuthContext} from "./AuthContext";
+import './style.css';
 
 export const AllExceptEmployeesNavbar = () => {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [debouncedQuery, setDebouncedQuery] = useState(query);
     const navigate = useNavigate();
+    const {logout} = useContext(AuthContext);
     const {translate} = useContext(LanguageContext);
-
+    const [showResults, setShowResults] = useState(false);
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedQuery(query);
@@ -27,7 +30,12 @@ export const AllExceptEmployeesNavbar = () => {
             async function fetchData() {
                 await fetchBooksContaingName(debouncedQuery)
                     .then(response => {
-                        setResults(response);
+                        if(response === "problem"){
+                            logout();
+                        }
+                        else {
+                            setResults(response);
+                        }
                     })
                     .catch(error => console.error("Error fetching data:", error));
             }
@@ -36,27 +44,35 @@ export const AllExceptEmployeesNavbar = () => {
     }, [debouncedQuery]);
     return (
         <div>
-            <ul>
+            <ul className="navbar">
                 <li onClick={() => navigate("/")}>{capitalizeFirstLetter(translate("home"))}</li>
-                <li onClick={()=>navigate("/books")}>{capitalizeFirstLetter(translate("books"))}</li>
-                {/*<li onClick={()=>navigate("/categories")}>{capitalizeFirstLetter(translate("categories"))}</li>*/}
+                <li onClick={() => navigate("/books")}>{capitalizeFirstLetter(translate("books"))}</li>
+                <li onClick={() => navigate("/categories")}>{capitalizeFirstLetter(translate("categories"))}</li>
                 <li>
-                    <form>
-                        <input type="text" onChange={(e) => setQuery(e.target.value)}
-                               placeholder={translate("inputsearch")}></input>
-                        <button type="submit">{capitalizeFirstLetter(translate("search"))}</button>
-                    </form>
+                    <div className="search-bar">
+                        <input
+                            type="text"
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder={translate("inputsearch")}
+                            onFocus={() => setShowResults(true)}
+                            onBlur={() => setTimeout(() => setShowResults(false), 200)}
+                        />
+                        <button className="search-button" type="submit">
+                            {capitalizeFirstLetter(translate("search"))}
+                        </button>
+
+                        {showResults && results.length > 0 && (
+                            <ul className="search-results">
+                                {results.slice(0, 5).map((book) => (
+                                    <li key={book.id} onClick={() => navigate(`/book/${book.id}`)}>
+                                        <strong>{book.title}</strong> ({book.publishedYear}) - {book.category}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </li>
-                {results.map((book) => (
-                    <li key={book.id}>
-                        <strong>{book.title}</strong> ({book.publishedYear}) - {book.category}
-                        <br/>
-                        ISBN: {book.isbn}
-                        <br/>
-                        {capitalizeFirstLetter(translate("authors"))}: {book.authors.join(", ")}
-                    </li>
-                ))}
             </ul>
         </div>
-    )
+)
 }

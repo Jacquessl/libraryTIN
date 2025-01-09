@@ -1,7 +1,6 @@
 import {useContext, useState} from "react";
 import {LanguageContext} from "../LanguageAppContext";
 import {fetchLogin} from "../Service/LoginService";
-import {fetchBooks} from "../Service/BookService";
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "./AuthContext";
 
@@ -27,9 +26,6 @@ export const Login = () => {
     const handlePasswordChange = (password) => {
         setPassword(password.target.value);
     }
-    const handleClick = async () => {
-        await fetchBooks(localStorage.getItem("token"));
-    }
     return(
         <div>
             <form onSubmit={submitLogin}>
@@ -37,7 +33,6 @@ export const Login = () => {
                 <input type="password" onChange={handlePasswordChange} placeholder={translate("password")} />
                 <button type="submit">{translate("login")}</button>
             </form>
-            <button onClick={handleClick}>clickme</button>
         </div>
     )
 }
