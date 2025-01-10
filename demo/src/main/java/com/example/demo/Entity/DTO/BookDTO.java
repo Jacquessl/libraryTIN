@@ -2,10 +2,12 @@ package com.example.demo.Entity.DTO;
 
 import com.example.demo.Entity.Book;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
 @Getter
 public class BookDTO {
 

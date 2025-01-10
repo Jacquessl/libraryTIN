@@ -1,16 +1,21 @@
 package com.example.demo.Service;
 
+import com.example.demo.Config.UserInfoDetails;
 import com.example.demo.Entity.Book;
+import com.example.demo.Entity.BookCopy;
 import com.example.demo.Entity.DTO.AddReservationDTO;
 import com.example.demo.Entity.DTO.ReservationDTO;
 import com.example.demo.Entity.Reservation;
 import com.example.demo.Entity.User;
+import com.example.demo.Repository.BookCopyRepositoryInterface;
 import com.example.demo.Repository.BookRepositoryInterface;
 import com.example.demo.Repository.ReservationRepositoryInterface;
 import com.example.demo.Repository.UserRepositoryInterface;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +25,13 @@ public class ReservationService {
     private final ReservationRepositoryInterface reservationRepository;
     private final UserRepositoryInterface userRepository;
     private final BookRepositoryInterface bookRepository;
-    public ReservationService(ReservationRepositoryInterface reservationRepository, UserRepositoryInterface userRepository, BookRepositoryInterface bookRepository) {
+    private final BookCopyRepositoryInterface bookCopyRepositoryInterface;
+
+    public ReservationService(ReservationRepositoryInterface reservationRepository, UserRepositoryInterface userRepository, BookRepositoryInterface bookRepository, BookCopyRepositoryInterface bookCopyRepositoryInterface) {
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.bookCopyRepositoryInterface = bookCopyRepositoryInterface;
     }
 
     public List<ReservationDTO> getReservations() {
@@ -41,9 +49,13 @@ public class ReservationService {
     }
     public List<ReservationDTO> getReservationsByBookId(int bookId) {
         Book book = bookRepository.findById(bookId).orElse(null);
+        List<BookCopy> bookCopies = bookCopyRepositoryInterface.findByBook(book);
         if(book != null) {
-            return reservationRepository.findReservationByBook(book).stream().map(ReservationDTO::new).collect(Collectors.toList());
-        }
+            return bookCopies.stream()
+                    .flatMap(bookCopy -> reservationRepository.findReservationByBookCopy(bookCopy)
+                            .stream()
+                            .map(ReservationDTO::new))
+                    .collect(Collectors.toList());        }
         return null;
     }
     public ResponseEntity<String> deleteReservation(int id) {
@@ -53,20 +65,27 @@ public class ReservationService {
         }
         return ResponseEntity.notFound().build();
     }
-    public ResponseEntity<ReservationDTO> addReservation(AddReservationDTO reservationDTO) {
-        Reservation reservation = new Reservation();
-        reservation.setUser(reservationDTO.getUser());
-        reservation.setBook(reservationDTO.getBook());
-        reservation.setReservationDate(reservationDTO.getReservationDate());
-        Reservation addedReservation = reservationRepository.save(reservation);
-        return ResponseEntity.ok(new ReservationDTO(addedReservation));
+    public ResponseEntity<ReservationDTO> addReservation(AddReservationDTO reservationDTO, Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        User user = null;
+        if (principal instanceof UserInfoDetails uid) {
+            user = userRepository.findUserByUsername(uid.getUsername());
+        }
+        if(user != null) {
+            bookCopyRepositoryInterface.findById(reservationDTO.getBookCopy().getCopyId()).get().setAvailable(false);
+            Reservation reservation = new Reservation();
+            reservation.setUser(user);
+            reservation.setBookCopy(bookCopyRepositoryInterface.findByCopyId(reservationDTO.getBookCopy().getCopyId()));
+            reservation.setReservationDate(LocalDateTime.now());
+            Reservation addedReservation = reservationRepository.save(reservation);
+            return ResponseEntity.ok(new ReservationDTO(addedReservation));
+        }
+        return ResponseEntity.notFound().build();
     }
     public ResponseEntity<ReservationDTO> editReservation(int id, AddReservationDTO reservationDTO) {
         Reservation reservation = reservationRepository.findById(id).orElse(null);
         if(reservation != null) {
-            reservation.setUser(reservationDTO.getUser());
-            reservation.setBook(reservationDTO.getBook());
-            reservation.setReservationDate(reservationDTO.getReservationDate());
+            reservation.setBookCopy(bookCopyRepositoryInterface.findByCopyId(reservationDTO.getBookCopy().getCopyId()));
             Reservation updatedReservation = reservationRepository.save(reservation);
             return ResponseEntity.ok(new ReservationDTO(updatedReservation));
         }

@@ -24,6 +24,6 @@ public class Reservation {
     private User user;
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    private BookCopy bookCopy;
     private LocalDateTime reservationDate;
 }

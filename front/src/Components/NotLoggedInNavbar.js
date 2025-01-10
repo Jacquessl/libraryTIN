@@ -9,10 +9,13 @@ export const NotLoggedInNavbar = () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-    return (<div>
-        <AllExceptEmployeesNavbar/>
-            <ul className="navbar">
+    return (
+        <div className="navbar-container" style={{ width: "100%" }}>
+
+            <AllExceptEmployeesNavbar/>
+                <ul className="navbar">
                 <li onClick={() => navigate("/login")}>{capitalizeFirstLetter(translate("login"))}</li>
             </ul>
-    </div>)
-}
+        </div>
+        )
+        }

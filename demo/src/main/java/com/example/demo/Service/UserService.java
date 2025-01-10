@@ -65,7 +65,6 @@ public class UserService {
             User savedUser = userRepository.save(user);
             return ResponseEntity.ok(savedUser);
         }
-        System.out.println(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).get().getUsername());
         return ResponseEntity.badRequest().build();
     }
     public ResponseEntity<String> deleteUser(int id) {

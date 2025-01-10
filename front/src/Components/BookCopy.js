@@ -11,6 +11,8 @@ export const BookCopy = () => {
     const {logout} = useContext(AuthContext);
     const {translate} = useContext(LanguageContext);
     const [hoveredBook, setHoveredBook] = useState(null);
+    const {isLoggedIn, isEmployee} = useContext(AuthContext);
+    const navigate = useNavigate();
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
@@ -25,13 +27,19 @@ export const BookCopy = () => {
                 }
             });
         }
-        const token = localStorage.getItem("token");
-        fetchData(token);
+        if(isLoggedIn) {
+            const token = localStorage.getItem("token");
+            fetchData(token);
+        }else{
+            navigate("/login");
+        }
     }, [location])
-    return (<div className="book-list">
+    return (
+        <div>{isLoggedIn && !isEmployee &&
+        <div className="book-list">
         {bookCopy.map((bookCopy) => (
             <BookCopyItem
-                key={bookCopy.book.isbn}
+                key={bookCopy.book.copyId}
                 bookCopy={bookCopy}
                 onHover={setHoveredBook}
             />
@@ -48,5 +56,5 @@ export const BookCopy = () => {
                 </div>
             </div>
         )}
-    </div>)
+        </div>}</div>)
 }

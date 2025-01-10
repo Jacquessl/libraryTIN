@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {EmployeeNavbar} from "./EmployeeNavbar";
 import {NotLoggedInNavbar} from "./NotLoggedInNavbar";
 import {AuthContext} from "./AuthContext";
@@ -10,10 +10,13 @@ import { FaUserCircle } from "react-icons/fa"
 
 export const Navbar = () => {
     const navigate = useNavigate();
-    const { isEmployee, isLoggedIn, login } = useContext(AuthContext);
+    const { isEmployee, isLoggedIn, login, logout } = useContext(AuthContext);
     const { translate, setLang, lang } = useContext(LanguageContext);
     const location = useLocation();
     const [flag, setFlag] = useState(`https://flagcdn.com/w40/${lang}.png`);
+    const [showLogout, setShowLogout] = useState(false);
+    const profileRef = useRef(null);
+
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
@@ -28,6 +31,18 @@ export const Navbar = () => {
     useEffect(() => {
         login()
     }, [])
+    const handleClickOutside = (event) => {
+        if (profileRef.current && !profileRef.current.contains(event.target)) {
+            setShowLogout(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
     return (<div>
     <div className="language-container">
         <span className="library-name">{translate("cityLibrary")}</span>
@@ -50,11 +65,21 @@ export const Navbar = () => {
                 : <NotLoggedInNavbar/>}
             {isLoggedIn && (
                 <ul className="navbar">
-                    <li onClick={()=>navigate("/bookCopy")}>{capitalizeFirstLetter(translate("reserve"))}</li>
-                    <li className="user-profile" onClick={() => navigate("/profile")}>
+                    {!isEmployee && <li onClick={()=>{setShowLogout(false); navigate("/bookCopy")}}>{capitalizeFirstLetter(translate("reserve"))}</li>
+                    }<div className="user-profile-container" ref={profileRef}>
+
+                    <li className="user-profile"
+                        onMouseEnter={() => setShowLogout(true)}
+                        onClick={() => navigate("/profile")}>
                         <FaUserCircle className="profile-icon"/>
                         <span>{capitalizeFirstLetter(translate("profile"))}</span>
                     </li>
+                    {showLogout && (
+                        <button className="logout-button" onClick={() => logout()}>
+                            Logout
+                        </button>
+                    )}
+                    </div>
                 </ul>
             )}
         </div>

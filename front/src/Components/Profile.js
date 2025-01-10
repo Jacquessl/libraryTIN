@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {fetchUserMe} from "../Service/UserService";
 import {fetchEmployeeMe} from "../Service/EmployeeService";
 import {LanguageContext} from "../LanguageAppContext";
@@ -8,9 +8,10 @@ import {AuthContext} from "./AuthContext";
 
 export const Profile = () => {
     const location = useLocation();
-    const {logout, isEmployee} = useContext(AuthContext);
+    const {logout, isEmployee, isLoggedIn} = useContext(AuthContext);
     const [user, setUser] = useState(null);
     const {translate} = useContext(LanguageContext);
+    const navigate = useNavigate();
     useEffect(() => {
         async function fetchData(token) {
             if(isEmployee){
@@ -32,7 +33,11 @@ export const Profile = () => {
                 });
             }
         }
-        fetchData(localStorage.getItem("token"));
+        if(isLoggedIn) {
+            fetchData(localStorage.getItem("token"));
+        }else{
+            navigate("/login");
+        }
     }, [location]);
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();

@@ -11,13 +11,13 @@ public class ReservationDTO {
 
     private Integer id;
     private User user;
-    private BookDTO book;
+    private BookCopyDTO bookCopy;
     private LocalDateTime reservationDate;
 
     public ReservationDTO(Reservation reservation) {
         this.id = reservation.getReservationId();
         this.user = reservation.getUser();
-        this.book = new BookDTO(reservation.getBook());
+        this.bookCopy = new BookCopyDTO(reservation.getBookCopy());
         this.reservationDate = reservation.getReservationDate();
     }
 }

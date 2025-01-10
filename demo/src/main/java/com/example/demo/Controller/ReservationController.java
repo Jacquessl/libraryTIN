@@ -4,6 +4,7 @@ import com.example.demo.Entity.DTO.AddReservationDTO;
 import com.example.demo.Entity.DTO.ReservationDTO;
 import com.example.demo.Service.ReservationService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,8 +39,8 @@ public class ReservationController {
         return reservationService.deleteReservation(id);
     }
     @PostMapping("/add")
-    public ResponseEntity<ReservationDTO> addReservation(@RequestBody AddReservationDTO reservationDTO) {
-        return reservationService.addReservation(reservationDTO);
+    public ResponseEntity<ReservationDTO> addReservation(@RequestBody AddReservationDTO reservationDTO, Authentication authentication) {
+        return reservationService.addReservation(reservationDTO, authentication);
     }
     @PutMapping("/edit/{id}")
     public ResponseEntity<ReservationDTO> editReservation(@PathVariable int id, @RequestBody AddReservationDTO reservationDTO) {
