@@ -10,9 +10,10 @@ export const AllExceptEmployeesNavbar = () => {
     const [results, setResults] = useState([]);
     const [debouncedQuery, setDebouncedQuery] = useState(query);
     const navigate = useNavigate();
-    const {logout} = useContext(AuthContext);
+    const {logout, isEmployee} = useContext(AuthContext);
     const {translate} = useContext(LanguageContext);
     const [showResults, setShowResults] = useState(false);
+
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedQuery(query);
@@ -64,7 +65,14 @@ export const AllExceptEmployeesNavbar = () => {
                         {showResults && results.length > 0 && (
                             <ul className="search-results">
                                 {results.slice(0, 5).map((book) => (
-                                    <li key={book.id} onClick={() => navigate(`/book/${book.id}`)}>
+                                    <li key={book.id} onClick={() => {
+                                        if (isEmployee) {
+                                            navigate(`/book`, { state: { book } });
+                                        } else {
+                                            navigate(`/bookCopy/available/${book.id}`)
+                                        }
+                                    }}
+                                    >
                                         <strong>{book.title}</strong> ({book.publishedYear}) - {book.category}
                                     </li>
                                 ))}

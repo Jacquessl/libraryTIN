@@ -28,5 +28,9 @@ export const fetchRegister = async (values) => {
         },
         body: JSON.stringify(values)
     })
-    console.log(await response.json());
+    if(response.ok) {
+        return await response.json();
+    }else{
+        return "problem";
+    }
 }

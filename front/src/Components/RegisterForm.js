@@ -58,7 +58,14 @@ export const RegisterForm = () => {
         setErrorMessage(errors);
         values.phone = values.phone.replace(/[\s-]/g, "");
         if (errors.length === 0) {
-            await fetchRegister(values).then((response) => console.log(response));
+            await fetchRegister(values).then((res) => {
+                if (res === "problem") {
+                    console.log("PROBLEM") //todo
+                } else {
+                    console.log("UDALO SIE") //todo
+                }
+                ;
+            })
         }
     }
 

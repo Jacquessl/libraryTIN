@@ -41,6 +41,7 @@ export const Books = () => {
                 onHover={setHoveredBook}
             />
         ))}
+        <button onClick={()=>navigate("/book")}></button>
 
         {hoveredBook && (
             <div className="tooltip-fixed">

@@ -64,16 +64,18 @@ export const Reservations = () => {
             }
         });
     }
-
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
     return(<div>
         <ul>{isEmployee && reservations.map((reservation)=>(
         <li key={reservation.id}>
             <p>{reservation.user.firstName} {reservation.user.lastName}</p>
-            <p>{reservation.bookCopy.book.title}</p>
-            <p>{reservation.reservationDate}</p>
-            <p>{reservation.status}</p>
-            <button onClick={()=>createLoan(reservation)}>loan</button>
-            <button onClick={()=>cancelReservation(reservation.id)}>cancel</button>
+            <p>{capitalizeFirstLetter(translate("title"))}: {reservation.bookCopy.book.title}</p>
+            <p>{capitalizeFirstLetter(translate("reservationDate"))}: {new Date(reservation.reservationDate).toLocaleDateString("pl-PL")}</p>
+            <p>{capitalizeFirstLetter(translate("status"))}: {reservation.status}</p>
+            <button onClick={() => createLoan(reservation)}>{translate("loan")}</button>
+            <button onClick={()=>cancelReservation(reservation.id)}>{translate("cancel")}</button>
         </li>
         ))}
         </ul>

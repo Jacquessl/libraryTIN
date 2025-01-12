@@ -44,7 +44,7 @@ public class EmployeeService {
         return null;
     }
     public ResponseEntity<Employee> addEmployee(AddEmployeeDTO employee){
-        if(userRepository.findUserByUsernameOrEmail(employee.getUsername(), employee.getEmail()).isEmpty() && employeeRepository.findEmployeeByUsernameOrEmail(employee.getUsername(), employee.getEmail()).isPresent()) {
+        if(userRepository.findUserByUsernameOrEmail(employee.getUsername(), employee.getEmail()).isEmpty() && employeeRepository.findEmployeeByUsernameOrEmail(employee.getUsername(), employee.getEmail()).isEmpty()) {
             Employee employeeToAdd = new Employee();
             employeeToAdd.setFirstName(employee.getFirstName());
             employeeToAdd.setLastName(employee.getLastName());

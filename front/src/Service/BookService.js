@@ -43,4 +43,35 @@ export const fetchBookById = async (id) => {
         return "problem";
     }
 }
-
+export const fetchAddBook = async (token, book) => {
+    const response = await fetch(`http://localhost:8080/api/books/add`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body: JSON.stringify(book)
+    });
+    if(response.ok){
+        return await response.json();
+    }else{
+        return "problem";
+    }
+}
+export const fetchEditBook = async (token, book, id) => {
+    const response = await fetch(`http://localhost:8080/api/books/edit/${id}`, {
+        method: "PUT",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body: JSON.stringify(book)
+    });
+    if(response.ok){
+        return await response.json();
+    }else{
+        return "problem";
+    }
+}

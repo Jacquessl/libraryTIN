@@ -33,5 +33,10 @@
   "loanDate": "loan date",
   "dueDate": "due date",
   "returnDate": "return date",
-  "employee": "employee"
+  "employee": "employee",
+  "reservationDate": "reservation date",
+  "status": "status",
+  "loan": "loan",
+  "cancel": "cancel",
+  "repeatPassword": "repeat password"
 }

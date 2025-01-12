@@ -78,7 +78,7 @@ public class UserService {
         return ResponseEntity.badRequest().build();
     }
     public ResponseEntity<User> updateUser(int id, AddUserDTO userDTO) {
-        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()) == null) {
+        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).isEmpty()) {
             Optional<User> user = userRepository.findById(id);
             if (user.isPresent()) {
                 user.get().setFirstName(userDTO.getFirstName());

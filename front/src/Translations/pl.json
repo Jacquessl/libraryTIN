@@ -33,5 +33,10 @@
   "loanDate": "data wypożyczenia",
   "dueDate": "termin do zwrotu",
   "returnDate": "data zwrotu",
-  "employee": "pracownik"
+  "employee": "pracownik",
+  "reservationDate": "data rezerwacji",
+  "status": "status",
+  "loan": "wypożycz",
+  "cancel": "anuluj",
+  "repeatPassword": "powtórz hasło"
 }

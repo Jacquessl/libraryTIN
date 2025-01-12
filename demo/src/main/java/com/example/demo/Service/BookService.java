@@ -8,6 +8,7 @@ import com.example.demo.Entity.DTO.BookDTO;
 import com.example.demo.Repository.AuthorRepositoryInterface;
 import com.example.demo.Repository.BookCopyRepositoryInterface;
 import com.example.demo.Repository.BookRepositoryInterface;
+import com.example.demo.Repository.CategoryRepositoryInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,13 @@ public class BookService {
     private final BookRepositoryInterface bookRepository;
     private final AuthorRepositoryInterface authorRepository;
     private final BookCopyRepositoryInterface bookCopyRepository;
+    private final CategoryRepositoryInterface categoryRepository;
 
-    public BookService(BookRepositoryInterface bookRepository, AuthorRepositoryInterface authorRepository, BookCopyRepositoryInterface bookCopyRepository) {
+    public BookService(BookRepositoryInterface bookRepository, AuthorRepositoryInterface authorRepository, BookCopyRepositoryInterface bookCopyRepository, CategoryRepositoryInterface categoryRepositoryInterface) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.bookCopyRepository = bookCopyRepository;
+        this.categoryRepository = categoryRepositoryInterface;
     }
     public List<BookDTO> getAllBooks() {
         return bookRepository.findAll().stream().map(BookDTO::new).collect(Collectors.toList());
@@ -48,7 +51,8 @@ public class BookService {
     public BookDTO addBook(AddBookDTO bookDTO) {
         Book newBook = new Book();
         newBook.setTitle(bookDTO.getTitle());
-        newBook.setCategory(bookDTO.getCategory());
+        Category cat = categoryRepository.getById(bookDTO.getCategoryId());
+        newBook.setCategory(cat);
         newBook.setPublishedYear(bookDTO.getPublishedYear());
         newBook.setIsbn(bookDTO.getIsbn());
         newBook.setAuthors(bookDTO.getAuthorsIds().stream().map(authorRepository::findByAuthorId).collect(Collectors.toSet()));
@@ -67,7 +71,8 @@ public class BookService {
         Optional<Book> book = bookRepository.findById(id);
         if(book.isPresent()){
             book.get().setTitle(bookDTO.getTitle());
-            book.get().setCategory(bookDTO.getCategory());
+            Category cat = categoryRepository.getById(bookDTO.getCategoryId());
+            book.get().setCategory(cat);
             book.get().setPublishedYear(bookDTO.getPublishedYear());
             book.get().setIsbn(bookDTO.getIsbn());
             book.get().setAuthors(bookDTO.getAuthorsIds().stream().map(authorRepository::findByAuthorId).collect(Collectors.toSet()));

@@ -10,4 +10,5 @@ public class AddUserDTO {
     private String phone;
     private String username;
     private String password;
+    //todo editUserDTO || changePasswordUser
 }

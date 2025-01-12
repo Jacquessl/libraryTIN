@@ -43,6 +43,7 @@ export const Users = () => {
                     <p>{capitalizeFirstLetter(translate("email"))}: {user.email}</p>
                     <p>{capitalizeFirstLetter(translate("username"))}: {user.username}</p>
                     <p>{capitalizeFirstLetter(translate("registeredDate"))}: {new Date(user.registeredDate).toLocaleDateString("pl-PL")}</p>
+                    <button onClick={()=>navigate("/addUser", {state:{user:user}})}></button>
                 </li>
             ))}
         </ul></div>}

@@ -15,12 +15,13 @@ export const BookCopyAvailable = () => {
 
     useEffect(() => {
         async function fetchData(token) {
+            setBooks([]);
             await fetchAvailableBookCopyById(token, id).then((response) => {
                 if(response === "problem"){
                     logout();
                 }
                 else {
-                    setBooks(response)
+                    setBooks(response);
                 }
             })
         }

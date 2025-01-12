@@ -8,7 +8,6 @@ import {Login} from "./Components/Login";
 import {Profile} from "./Components/Profile";
 import {AuthProvider} from "./Components/AuthContext";
 import {Books} from "./Components/Books";
-import {Book} from "./Components/Book";
 import {Category} from "./Components/Category";
 import {BookCopy} from "./Components/BookCopy";
 import {RegisterForm} from "./Components/RegisterForm";
@@ -19,6 +18,7 @@ import {Loans} from "./Components/Loans";
 import {AddUserByEmployee} from "./Components/AddUserByEmployee";
 import {ReservationHistory} from "./Components/ReservationHistory";
 import {LoanHistory} from "./Components/LoanHistory";
+import {AddOrEditBook} from "./Components/AddOrEditBook";
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/books" element={<Books />}/>
                     <Route path="/categories" element={<Category />}/>
-                    <Route path="/book/:id" element={<Book />}/>
+                    <Route path="/book" element={<AddOrEditBook />}/>
                     <Route path="/bookCopy" element={<BookCopy/>}/>
                   <Route path="/register" element={<RegisterForm/>}/>
                   <Route path="/bookCopy/available/:id" element={<BookCopyAvailable/>}/>
