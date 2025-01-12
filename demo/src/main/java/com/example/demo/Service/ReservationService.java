@@ -7,6 +7,7 @@ import com.example.demo.Entity.DTO.AddReservationDTO;
 import com.example.demo.Entity.DTO.ReservationDTO;
 import com.example.demo.Entity.Reservation;
 import com.example.demo.Entity.User;
+import com.example.demo.Enums.ReservationStatus;
 import com.example.demo.Repository.BookCopyRepositoryInterface;
 import com.example.demo.Repository.BookRepositoryInterface;
 import com.example.demo.Repository.ReservationRepositoryInterface;
@@ -35,7 +36,11 @@ public class ReservationService {
     }
 
     public List<ReservationDTO> getReservations() {
-        return reservationRepository.findAll().stream().map(ReservationDTO::new).collect(Collectors.toList());
+        return reservationRepository.findAll().stream().map(ReservationDTO::new).filter((reservation)-> reservation.getStatus().equals(ReservationStatus.Pending)).collect(Collectors.toList());
+    }
+    public List<ReservationDTO> getHistoryReservations() {
+        return reservationRepository.findAll().stream().map(ReservationDTO::new).filter((reservation)->
+                !reservation.getStatus().equals(ReservationStatus.Pending)).collect(Collectors.toList());
     }
     public ReservationDTO getReservationById(int id) {
         return reservationRepository.findById(id).map(ReservationDTO::new).orElse(null);
@@ -72,20 +77,28 @@ public class ReservationService {
             user = userRepository.findUserByUsername(uid.getUsername());
         }
         if(user != null) {
-            bookCopyRepositoryInterface.findById(reservationDTO.getBookCopy().getCopyId()).get().setAvailable(false);
+            BookCopy book = bookCopyRepositoryInterface.findByCopyId(reservationDTO.getBookCopy().getCopyId());
             Reservation reservation = new Reservation();
             reservation.setUser(user);
             reservation.setBookCopy(bookCopyRepositoryInterface.findByCopyId(reservationDTO.getBookCopy().getCopyId()));
             reservation.setReservationDate(LocalDateTime.now());
+            reservation.setStatus(ReservationStatus.Pending);
             Reservation addedReservation = reservationRepository.save(reservation);
+            book.setAvailable(false);
+            bookCopyRepositoryInterface.save(book);
             return ResponseEntity.ok(new ReservationDTO(addedReservation));
         }
         return ResponseEntity.notFound().build();
     }
-    public ResponseEntity<ReservationDTO> editReservation(int id, AddReservationDTO reservationDTO) {
+    public ResponseEntity<ReservationDTO> editReservation(int id, ReservationStatus status) {
         Reservation reservation = reservationRepository.findById(id).orElse(null);
         if(reservation != null) {
-            reservation.setBookCopy(bookCopyRepositoryInterface.findByCopyId(reservationDTO.getBookCopy().getCopyId()));
+            reservation.setStatus(status);
+            if(status.equals(ReservationStatus.Cancelled)){
+                BookCopy book = bookCopyRepositoryInterface.findByCopyId(reservation.getBookCopy().getCopyId());
+                book.setAvailable(true);
+                bookCopyRepositoryInterface.save(book);
+            }
             Reservation updatedReservation = reservationRepository.save(reservation);
             return ResponseEntity.ok(new ReservationDTO(updatedReservation));
         }

@@ -42,6 +42,7 @@ export const BookCopy = () => {
                 key={bookCopy.book.copyId}
                 bookCopy={bookCopy}
                 onHover={setHoveredBook}
+                setBookCopies={setBookCopy}
             />
         ))}
 

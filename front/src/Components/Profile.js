@@ -45,8 +45,7 @@ export const Profile = () => {
     return(
         <div>{user && (
             <ul>
-                <li>{capitalizeFirstLetter(translate("firstName"))}: {user.firstName}</li>
-                <li>{capitalizeFirstLetter(translate("lastName"))}: {user.lastName}</li>
+                {user.firstName} {user.lastName}
                 <li>{capitalizeFirstLetter("e-mail")}: {user.email}</li>
                 <li>{capitalizeFirstLetter(translate("phone"))}: {user.phone}</li>
                 <li>{capitalizeFirstLetter(translate("username"))}: {user.username}</li>

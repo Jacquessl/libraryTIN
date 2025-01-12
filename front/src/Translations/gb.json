@@ -25,5 +25,13 @@
   "dontHaveAccountYet?": "Don't have account yet? Register Now!",
   "reserve": "reserve",
   "condition": "condition",
-  "checkAvailability": "check availability"
+  "checkAvailability": "check availability",
+  "users": "users",
+  "reservations": "reservations",
+  "loans": "loans",
+  "book": "book",
+  "loanDate": "loan date",
+  "dueDate": "due date",
+  "returnDate": "return date",
+  "employee": "employee"
 }

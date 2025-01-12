@@ -25,5 +25,13 @@
   "dontHaveAccountYet?": "Nie masz jeszcze konta? Zarejestruj się!",
   "reserve": "zarezerwuj",
   "condition": "stan",
-  "checkAvailability": "sprawdź dostępność"
+  "checkAvailability": "sprawdź dostępność",
+  "users": "użytkownicy",
+  "reservations": "rezerwacje",
+  "loans": "wypożyczenia",
+  "book": "książka",
+  "loanDate": "data wypożyczenia",
+  "dueDate": "termin do zwrotu",
+  "returnDate": "data zwrotu",
+  "employee": "pracownik"
 }

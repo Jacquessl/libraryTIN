@@ -1,5 +1,7 @@
 package com.example.demo.Entity;
 
+import com.example.demo.Enums.ReservationStatus;
+import com.example.demo.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +25,10 @@ public class Reservation {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
+    @JoinColumn(name = "copy_id", nullable = false)
     private BookCopy bookCopy;
     private LocalDateTime reservationDate;
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('Pending', 'Cancelled', 'Completed')")
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
 }

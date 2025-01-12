@@ -14,3 +14,20 @@ export const fetchUserMe = async (token) => {
         return "problem";
     }
 }
+
+export const fetchUsersFromApi = async (token) => {
+    const response = await fetch(`http://localhost:8080/api/user`, {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    });
+    if(response.ok) {
+        return await response.json();
+    }
+    else{
+        return "problem";
+    }
+}

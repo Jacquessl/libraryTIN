@@ -2,6 +2,8 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddReservationDTO;
 import com.example.demo.Entity.DTO.ReservationDTO;
+import com.example.demo.Entity.Reservation;
+import com.example.demo.Enums.ReservationStatus;
 import com.example.demo.Service.ReservationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -43,7 +45,11 @@ public class ReservationController {
         return reservationService.addReservation(reservationDTO, authentication);
     }
     @PutMapping("/edit/{id}")
-    public ResponseEntity<ReservationDTO> editReservation(@PathVariable int id, @RequestBody AddReservationDTO reservationDTO) {
-        return reservationService.editReservation(id, reservationDTO);
+    public ResponseEntity<ReservationDTO> editReservation(@PathVariable int id, @RequestBody ReservationStatus status) {
+        return reservationService.editReservation(id, status);
+    }
+    @GetMapping("/history")
+    public List<ReservationDTO> getReservationHistory() {
+        return reservationService.getHistoryReservations();
     }
 }

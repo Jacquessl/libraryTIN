@@ -1,14 +1,18 @@
 import {createContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isEmployee, setIsEmployee] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isManager, setIsManager] = useState(false);
+    const [isEmployee, setIsEmployee] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const [isManager, setIsManager] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        updateRole(localStorage.getItem("ROLE"));
+        const role = localStorage.getItem("ROLE");
+        updateRole(role);
+        setLoading(false);
 
         const handleStorageChange = () => {
             updateRole(localStorage.getItem("ROLE"));
@@ -24,9 +28,7 @@ export const AuthProvider = ({ children }) => {
     const updateRole = (newRole) => {
         setIsEmployee(newRole?.toLowerCase() === "librarian" || newRole?.toLowerCase() === "manager");
         setIsManager(newRole?.toLowerCase() === "manager");
-        if(newRole){
-            setIsLoggedIn(true)
-        }
+        setIsLoggedIn(!!newRole);
     };
 
     const login = () => {
@@ -41,8 +43,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isEmployee, login, logout, isLoggedIn, isManager }}>
-            {children}
+        <AuthContext.Provider value={{ isEmployee, login, logout, isLoggedIn, isManager, loading }}>
+            {!loading && children}
         </AuthContext.Provider>
     );
 };

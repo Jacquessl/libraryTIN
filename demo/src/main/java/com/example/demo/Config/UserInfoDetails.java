@@ -9,24 +9,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class UserInfoDetails implements UserDetails {
-    private String username;
-    private String password;
-    private List<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
     public UserInfoDetails(User user) {
         this.username = user.getUsername(); // Assuming 'name' is used as 'username'
         this.password = user.getPasswordHash();
-        this.authorities = List.of("USER".split(","))
-                .stream()
+        this.authorities = Stream.of("USER".split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
     public UserInfoDetails(Employee employee) {
         this.username = employee.getUsername();
         this.password = employee.getPasswordHash();
-        this.authorities = List.of(employee.getPosition().split(","))
-                .stream()
+        this.authorities = Stream.of(employee.getPosition().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

@@ -110,11 +110,11 @@ INSERT INTO book_authors (book_id, author_id) VALUES
 (4, 4);  -- Stephen King - The Shining
 
 INSERT INTO book_copies (book_id, condition_status, available) VALUES
-(1, 'Good', TRUE),
-(1, 'New', TRUE),
+(1, 'Good', FALSE),
+(1, 'New', FALSE),
 (2, 'Worn', FALSE),
 (3, 'Good', TRUE),
-(4, 'Good', TRUE),
+(4, 'Good', FALSE),
 (4, 'Worn', FALSE);
 
 INSERT INTO users (first_name, last_name, email, phone, username, password_hash) VALUES
@@ -131,6 +131,6 @@ INSERT INTO loans (user_id, copy_id, loan_date, due_date, employee_id) VALUES
 (1, 3, '2023-12-05', '2023-12-19', 1);
 
 INSERT INTO reservations (user_id, book_id, reservation_date, status) VALUES
-(1, 2, '2023-12-01 10:30:00', 'Pending'),
-(2, 1, '2023-12-02 14:00:00', 'Completed');
+(1, 5, '2023-12-01 10:30:00', 'Pending'),
+(2, 6, '2023-12-02 14:00:00', 'Completed');
 

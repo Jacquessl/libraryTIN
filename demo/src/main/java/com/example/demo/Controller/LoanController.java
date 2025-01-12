@@ -2,8 +2,12 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddLoanDTO;
 import com.example.demo.Entity.DTO.LoanDTO;
+import com.example.demo.Entity.DTO.ReservationDTO;
+import com.example.demo.Entity.Reservation;
 import com.example.demo.Service.LoanService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +49,10 @@ public class LoanController {
         }
         return loanService.getLoans();
     }
+    @GetMapping("/history")
+    public List<LoanDTO> getLoanHistory() {
+        return loanService.getLoansHistory();
+    }
     @GetMapping("/{id}")
     public LoanDTO getLoan(@PathVariable int id) {
         return loanService.getLoan(id);
@@ -54,11 +62,15 @@ public class LoanController {
         return loanService.deleteLoan(id);
     }
     @PostMapping("/add")
-    public ResponseEntity<LoanDTO> addLoan(@RequestBody AddLoanDTO loanDTO) {
-        return loanService.createLoan(loanDTO);
+    public ResponseEntity<LoanDTO> addLoan(@RequestBody AddLoanDTO loanDTO, Authentication authentication) {
+        return loanService.createLoan(loanDTO, authentication);
     }
     @PutMapping("/edit/{id}")
-    public ResponseEntity<LoanDTO> editLoan(@PathVariable int id, @RequestBody AddLoanDTO loanDTO) {
-        return loanService.editLoan(id, loanDTO);
+    public ResponseEntity<LoanDTO> editLoan(@PathVariable int id) {
+        return loanService.editLoan(id);
+    }
+    @PutMapping("/return/{id}")
+    public ResponseEntity<LoanDTO> returnLoan(@PathVariable int id){
+        return loanService.returnLoan(id);
     }
 }

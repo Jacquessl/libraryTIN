@@ -13,6 +13,12 @@ import {Category} from "./Components/Category";
 import {BookCopy} from "./Components/BookCopy";
 import {RegisterForm} from "./Components/RegisterForm";
 import {BookCopyAvailable} from "./Components/BookCopyAvailable";
+import {Users} from "./Components/Users";
+import {Reservations} from "./Components/Reservations";
+import {Loans} from "./Components/Loans";
+import {AddUserByEmployee} from "./Components/AddUserByEmployee";
+import {ReservationHistory} from "./Components/ReservationHistory";
+import {LoanHistory} from "./Components/LoanHistory";
 
 function App() {
   return (
@@ -30,6 +36,12 @@ function App() {
                     <Route path="/bookCopy" element={<BookCopy/>}/>
                   <Route path="/register" element={<RegisterForm/>}/>
                   <Route path="/bookCopy/available/:id" element={<BookCopyAvailable/>}/>
+                  <Route path="/users" element={<Users/>}/>
+                  <Route path="/reservations" element={<Reservations/>}/>
+                  <Route path="/loans" element={<Loans/>}/>
+                  <Route path="/addUser" element={<AddUserByEmployee/>}/>
+                  <Route path="/reservationHistory" element={<ReservationHistory/>}/>
+                  <Route path="/loanHistory" element={<LoanHistory/>}/>
                 </Routes>
               <Footer/>
             </BrowserRouter>

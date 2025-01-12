@@ -1,21 +1,29 @@
 import {useContext, useState} from "react";
 import {LanguageContext} from "../LanguageAppContext";
 import {useNavigate} from "react-router-dom";
-import {fetchReserveBookCopy} from "../Service/BookCopyService";
+import {fetchBookCopy, fetchReserveBookCopy} from "../Service/BookCopyService";
+import {AuthContext} from "./AuthContext";
 
-export const BookCopyItem = ({ bookCopy, onHover }) => {
+export const BookCopyItem = ({ bookCopy, onHover, setBookCopies }) => {
     const {translate} = useContext(LanguageContext);
     const navigate = useNavigate();
+    const {logout} = useContext(AuthContext);
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
     async function reserveBook(){
         const token = localStorage.getItem("token");
-        await fetchReserveBookCopy(token, bookCopy).then((res)=> {
-            if(res === "problem"){
-                console.log("nieUdaloSieCos");
-            }else{
-                navigate("/");
+        await fetchReserveBookCopy(token, bookCopy).then(async (res) => {
+            if (res === "problem") {
+                logout();
+            } else {
+                await fetchBookCopy(token).then((bookCopy) => {
+                    if (bookCopy === "problem") {
+                        logout();
+                    } else {
+                        setBookCopies(bookCopy)
+                    }
+                });
             }
         })
     }
