@@ -8,6 +8,7 @@ import com.example.demo.Repository.BookRepositoryInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,7 +34,7 @@ public class AuthorService {
         Author newAuthor = new Author();
         newAuthor.setFirstName(authorDTO.getFirstName());
         newAuthor.setLastName(authorDTO.getLastName());
-        newAuthor.setBooks(authorDTO.getBookTitles().stream().map(bookRepository::findBookByTitle).collect(Collectors.toSet()));
+        newAuthor.setBooks(new HashSet<>());
         Author addedAuthor = authorRepository.save(newAuthor);
 
         return new AuthorDTO(addedAuthor);
@@ -43,7 +44,6 @@ public class AuthorService {
         if (author.isPresent()) {
             author.get().setFirstName(authorDTO.getFirstName());
             author.get().setLastName(authorDTO.getLastName());
-            author.get().setBooks(authorDTO.getBookTitles().stream().map(bookRepository::findBookByTitle).collect(Collectors.toSet()));
             Author addedAuthor = authorRepository.save(author.get());
             return new AuthorDTO(addedAuthor);
         }

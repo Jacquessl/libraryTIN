@@ -3,7 +3,6 @@ package com.example.demo.Repository;
 import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Book;
 import com.example.demo.Entity.Category;
-import com.example.demo.Entity.DTO.BookDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

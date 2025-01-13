@@ -2,7 +2,6 @@ package com.example.demo.Entity.DTO;
 
 import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Book;
-import com.example.demo.Entity.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

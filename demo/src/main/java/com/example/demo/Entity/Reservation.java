@@ -1,7 +1,6 @@
 package com.example.demo.Entity;
 
 import com.example.demo.Enums.ReservationStatus;
-import com.example.demo.Enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

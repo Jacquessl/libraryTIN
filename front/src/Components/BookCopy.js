@@ -4,7 +4,7 @@ import {fetchBookCopy} from "../Service/BookCopyService";
 import {AuthContext} from "./AuthContext";
 import {LanguageContext} from "../LanguageAppContext";
 import {BookCopyItem} from "./BookCopyItem";
-
+import "./styles/BookCopies.css"
 export const BookCopy = () => {
     const location = useLocation()
     const [bookCopy, setBookCopy] = useState([]);
@@ -35,27 +35,33 @@ export const BookCopy = () => {
         }
     }, [location])
     return (
-        <div>{isLoggedIn && !isEmployee &&
-        <div className="book-list">
-        {bookCopy.map((bookCopy) => (
-            <BookCopyItem
-                key={bookCopy.book.copyId}
-                bookCopy={bookCopy}
-                onHover={setHoveredBook}
-                setBookCopies={setBookCopy}
-            />
-        ))}
+        <div className="book-copies-container">
+            <h2 className="book-copies-title">{capitalizeFirstLetter(translate("books"))}</h2>
+            {isLoggedIn && !isEmployee && (
+                <div className="book-list">
+                    {bookCopy.map((bookCopy) => (
+                        <BookCopyItem
+                            key={bookCopy.book.copyId}
+                            bookCopy={bookCopy}
+                            onHover={setHoveredBook}
+                            setBookCopies={setBookCopy}
+                        />
+                    ))}
 
-        {hoveredBook && (
-            <div className="tooltip-fixed">
-                <div className="tooltip-content">
-                    <h3>{hoveredBook.book.title}</h3>
-                    <p><strong>ISBN:</strong> {hoveredBook.book.isbn}</p>
-                    <p><strong>{capitalizeFirstLetter(translate("authors"))}:</strong> {hoveredBook.book.authors.join(", ")}</p>
-                    <p><strong>{capitalizeFirstLetter(translate("publishedYear"))}:</strong> {hoveredBook.book.publishedYear}</p>
-                    <p><strong>{capitalizeFirstLetter(translate("condition"))}:</strong> {hoveredBook.conditionStatus}</p>
+                    {hoveredBook && (
+                        <div className="tooltip-fixed">
+                            <div className="tooltip-content">
+                                <h3>{hoveredBook.book.title}</h3>
+                                <p><strong>ISBN:</strong> {hoveredBook.book.isbn}</p>
+                                <p><strong>{capitalizeFirstLetter(translate("authors"))}:</strong> {hoveredBook.book.authors.join(", ")}</p>
+                                <p><strong>{capitalizeFirstLetter(translate("publishedYear"))}:</strong> {hoveredBook.book.publishedYear}</p>
+                                <p><strong>{capitalizeFirstLetter(translate("condition"))}:</strong> {hoveredBook.conditionStatus}</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            </div>
-        )}
-        </div>}</div>)
+            )}
+        </div>
+    );
+
 }

@@ -5,7 +5,7 @@ import {AuthContext} from "./AuthContext";
 import {LanguageContext} from "../LanguageAppContext";
 import {AllExceptEmployeesNavbar} from "./AllExceptEmployeesNavbar";
 import {useLocation, useNavigate} from "react-router-dom";
-import './style.css';
+import './styles/style.css';
 import { FaUserCircle } from "react-icons/fa"
 
 export const Navbar = () => {

@@ -12,8 +12,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
-import static ch.qos.logback.core.encoder.ByteArrayUtil.hexStringToByteArray;
-
 @Component
 public class JwtUtil {
 

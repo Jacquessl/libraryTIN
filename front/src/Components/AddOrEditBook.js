@@ -2,10 +2,10 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { LanguageContext } from "../LanguageAppContext";
 import { AuthContext } from "./AuthContext";
-import {fetchAddBook, fetchBookById, fetchEditBook} from "../Service/BookService";
+import {fetchAddBook, fetchEditBook} from "../Service/BookService";
 import { fetchAuthors } from "../Service/AuthorService";
 import { fetchCategories } from "../Service/CategoriesService";
-import "./bookAddStyle.css";
+import "./styles/bookAddStyle.css";
 
 export const AddOrEditBook = () => {
     const { id } = useParams();
@@ -46,8 +46,14 @@ export const AddOrEditBook = () => {
                 }
 
                 const token = localStorage.getItem("token");
-                const fetchedAuthors = await fetchAuthors(token);
-                const fetchedCategories = await fetchCategories(token);
+                const fetchedAuthors = await fetchAuthors(token).then(res=>{
+                    if(res==="problem"){
+                        logout();
+                    }else{
+                        return res
+                    }
+                });
+                const fetchedCategories = await fetchCategories();
 
                 setAuthors(fetchedAuthors);
                 setCategories(fetchedCategories);
@@ -80,26 +86,22 @@ export const AddOrEditBook = () => {
 
         if (!formData.title.trim()) {
             newErrors.title = "titleError";
-            // newErrors.title = "Tytuł nie może być pusty.";
         }
 
         const currentYear = new Date().getFullYear();
         if (!formData.publishedYear || formData.publishedYear < 1000 || formData.publishedYear > currentYear) {
             newErrors.publishedYear = "publishedYearError";
-            // newErrors.publishedYear = "Niepoprawny rok publikacji.";
         }
 
         if (!validateISBN(formData.isbn)) {
             newErrors.isbn = "isbnError";
-            // newErrors.isbn = "Niepoprawny format ISBN (np. 978-3-16-148410-0).";
         }
 
         if (!formData.categoryId) {
-            // newErrors.category = "Wybierz kategorię.";
-            newErrors.category = "categoryError"; //todo translations
+            newErrors.category = "categoryError";
         }
         if (formData.authorsIds.length < 1){
-            newErrors.authorsIds = "authorsIds";
+            newErrors.authorsIds = "authorsIdsError";
         }
 
         setErrors(newErrors);
@@ -113,7 +115,9 @@ export const AddOrEditBook = () => {
             [name]: value,
         }));
     };
-
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
     const handleAuthorSelection = (authorId) => {
         setFormData((prevState) => {
             const isSelected = prevState.authorsIds.includes(authorId);
@@ -174,7 +178,7 @@ export const AddOrEditBook = () => {
                         value={formData.title}
                         onChange={handleInputChange}
                     />
-                    {errors.title && <span className="error">{errors.title}</span>}
+                    {errors.title && <span className="error">{capitalizeFirstLetter(translate(errors.title))}</span>}
                 </label>
 
                 <label>
@@ -185,7 +189,7 @@ export const AddOrEditBook = () => {
                         value={formData.publishedYear}
                         onChange={handleInputChange}
                     />
-                    {errors.publishedYear && <span className="error">{errors.publishedYear}</span>}
+                    {errors.publishedYear && <span className="error">{capitalizeFirstLetter(translate(errors.publishedYear))}</span>}
                 </label>
 
                 <label>
@@ -198,7 +202,7 @@ export const AddOrEditBook = () => {
                             </option>
                         ))}
                     </select>
-                    {errors.category && <span className="error">{errors.category}</span>}
+                    {errors.category && <span className="error">{capitalizeFirstLetter(translate(errors.category))}</span>}
                 </label>
 
                 <label>
@@ -209,7 +213,7 @@ export const AddOrEditBook = () => {
                         value={formData.isbn}
                         onChange={handleInputChange}
                     />
-                    {errors.isbn && <span className="error">{errors.isbn}</span>}
+                    {errors.isbn && <span className="error">{capitalizeFirstLetter(translate(errors.isbn))}</span>}
                 </label>
 
                 <fieldset>
@@ -225,13 +229,16 @@ export const AddOrEditBook = () => {
                         </label>
                     ))}
                 </fieldset>
-                {errors.authorsIds && <span className="error">{errors.authorsIds}</span>}
+                {errors.authorsIds && <span className="error">{capitalizeFirstLetter(translate(errors.authorsIds))}</span>}
 
-                <button type="submit">Zapisz zmiany</button>
+                <button type="submit">{capitalizeFirstLetter(translate("saveChanges"))}</button>
             </form>
+        <button onClick={() => navigate("/addAuthor")} className="add-author-button">
+            {capitalizeFirstLetter(translate("addAuthor"))}
+        </button>
     </div>
-            }
-        </div>
+}
+</div>
 
     );
 };

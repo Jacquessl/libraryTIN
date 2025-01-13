@@ -71,5 +71,7 @@ export const fetchLoanHistory = async (token) => {
 
     if(response.ok){
         return await response.json();
+    }else{
+        return "problem";
     }
 }

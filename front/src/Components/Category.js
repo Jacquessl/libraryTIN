@@ -1,15 +1,15 @@
 import {useContext, useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {LanguageContext} from "../LanguageAppContext";
 import {fetchCategories} from "../Service/CategoriesService";
 import {AuthContext} from "./AuthContext";
-
+import "./styles/Category.css"
 export const Category= () => {
     const [categories, setCategories] = useState([]);
     const location = useLocation();
     const {translate} = useContext(LanguageContext);
     const {logout} = useContext(AuthContext);
-
+    const navigate = useNavigate();
     useEffect(() => {
         async function fetchData() {
             await fetchCategories().then(categories => {
@@ -25,15 +25,21 @@ export const Category= () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-    return(
-        <div><h1>{capitalizeFirstLetter(translate("categoriesList"))}</h1>
-        <ul>
-            {categories.map(category => (
-                <li key={category.id}>
-                    {category.name}
-                </li>
-            ))}
-        </ul>
+    return (
+        <div className="category-container">
+            <h1 className="category-title">{capitalizeFirstLetter(translate("categoriesList"))}</h1>
+            <ul className="category-list">
+                {categories.map(category => (
+                    <li
+                        className="category-item"
+                        onClick={() => navigate("/books", { state: { books: category.books } })}
+                        key={category.id}
+                    >
+                        {category.name}
+                    </li>
+                ))}
+            </ul>
         </div>
-    )
+    );
+
 }

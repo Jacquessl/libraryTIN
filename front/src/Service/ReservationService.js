@@ -24,6 +24,8 @@ export const fetchCancelReservation = async (token, id) => {
         body: JSON.stringify("Cancelled")})
     if(response.ok){
         return await response.json();
+    }else{
+        return "problem"
     }
 }
 export const fetchReservationHistory = async (token) => {

@@ -2,12 +2,9 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddLoanDTO;
 import com.example.demo.Entity.DTO.LoanDTO;
-import com.example.demo.Entity.DTO.ReservationDTO;
-import com.example.demo.Entity.Reservation;
 import com.example.demo.Service.LoanService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
