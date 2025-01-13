@@ -13,11 +13,13 @@ export const EmployeeNavbar = () => {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
     return (<div>{isManager && <ManagerNavbar/>}
+        <div>
         <ul className="navbar">
-            <li onClick={()=>navigate("/users")}>{capitalizeFirstLetter(translate("users"))}</li>
-            <li onClick={()=>navigate("/reservations")}>{capitalizeFirstLetter(translate("reservations"))}</li>
-            <li onClick={()=>navigate("/loans")}>{capitalizeFirstLetter(translate("loans"))}</li>
+
+            <li onClick={() => navigate("/users", {state: {showEmployees: false}})}>{capitalizeFirstLetter(translate("users"))}</li>
+            <li onClick={() => navigate("/reservations")}>{capitalizeFirstLetter(translate("reservations"))}</li>
+            <li onClick={() => navigate("/loans")}>{capitalizeFirstLetter(translate("loans"))}</li>
             <AllExceptEmployeesNavbar/>
-        </ul>
-    </div>)
-}
+        </ul></div>
+            </div>)
+        }

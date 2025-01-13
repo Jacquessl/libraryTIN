@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import {LanguageContext} from "../LanguageAppContext";
 import {AllExceptEmployeesNavbar} from "./AllExceptEmployeesNavbar";
-import './style.css';
+import './styles/style.css';
 export const NotLoggedInNavbar = () => {
     const navigate = useNavigate();
     const {translate} = useContext(LanguageContext);

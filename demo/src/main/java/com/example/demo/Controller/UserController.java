@@ -1,12 +1,12 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddUserDTO;
+import com.example.demo.Entity.DTO.ChangePassword;
+import com.example.demo.Entity.DTO.EditUserDTO;
 import com.example.demo.Service.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.Entity.User;
 
@@ -55,7 +55,11 @@ public class UserController {
         return userService.deleteUser(id);
     }
     @PutMapping("/edit/{id}")
-    public ResponseEntity<User> editUser(@PathVariable int id, @RequestBody AddUserDTO user){
+    public ResponseEntity<User> editUser(@PathVariable int id, @RequestBody EditUserDTO user){
         return userService.updateUser(id, user);
+    }
+    @PutMapping("/edit/changePassword/{id}")
+    public ResponseEntity<User> changePassword(@PathVariable int id, @RequestBody ChangePassword values, Authentication authentication){
+        return userService.changePassword(id, values.getNewPassword(), authentication);
     }
 }

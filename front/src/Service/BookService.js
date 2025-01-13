@@ -43,6 +43,21 @@ export const fetchBookById = async (id) => {
         return "problem";
     }
 }
+export const fetchBooksContainingTitle = async (title) => {
+    const response = await fetch(`http://localhost:8080/api/books?title=${title}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+    });
+    if (response.ok) {
+        return await response.json();
+    }
+    if (response.status === 403 || response.status === 401) {
+        return "problem";
+    }
+}
 export const fetchAddBook = async (token, book) => {
     const response = await fetch(`http://localhost:8080/api/books/add`, {
         method: "POST",

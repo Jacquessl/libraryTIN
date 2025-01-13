@@ -4,7 +4,6 @@ import com.example.demo.Entity.Author;
 import com.example.demo.Entity.Category;
 import com.example.demo.Entity.DTO.BookCopyDTO;
 import com.example.demo.Entity.DTO.AddBookCopyDTO;
-import com.example.demo.Entity.DTO.BookDTO;
 import com.example.demo.Service.BookCopyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

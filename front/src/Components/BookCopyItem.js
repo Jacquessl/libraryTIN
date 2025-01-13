@@ -1,13 +1,13 @@
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {LanguageContext} from "../LanguageAppContext";
-import {useNavigate} from "react-router-dom";
 import {fetchBookCopy, fetchReserveBookCopy} from "../Service/BookCopyService";
 import {AuthContext} from "./AuthContext";
+import "./styles/BookCopies.css"
 
 export const BookCopyItem = ({ bookCopy, onHover, setBookCopies }) => {
     const {translate} = useContext(LanguageContext);
-    const navigate = useNavigate();
     const {logout} = useContext(AuthContext);
+
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
@@ -35,9 +35,12 @@ export const BookCopyItem = ({ bookCopy, onHover, setBookCopies }) => {
         >
             <ul>
                 <li>{bookCopy.book.title}</li>
-                <button onClick={()=>reserveBook()}>{capitalizeFirstLetter(translate("reserve"))}</button>
+                <button className="reserve-button" onClick={() => reserveBook()}>
+                    {capitalizeFirstLetter(translate("reserve"))}
+                </button>
             </ul>
         </div>
     );
+
 };
 

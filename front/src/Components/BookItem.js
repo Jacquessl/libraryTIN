@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 import {AuthContext} from "./AuthContext";
 
 export const BookItem = ({ book, onHover }) => {
-    const [showTooltip, setShowTooltip] = useState(false);
     const {translate} = useContext(LanguageContext);
     const navigate = useNavigate();
     const {isEmployee} = useContext(AuthContext);
@@ -19,7 +18,7 @@ export const BookItem = ({ book, onHover }) => {
         >
             <ul>
                 <li>{book.title}</li>
-                {isEmployee ? <button onClick={()=>navigate("/book", { state: { book } })}>edit</button> : <button onClick={()=>navigate(`/bookCopy/available/${book.id}`)}>{capitalizeFirstLetter(translate("checkAvailability"))}</button>}
+                {isEmployee ? <button onClick={()=>navigate("/book", { state: { book } })}>{capitalizeFirstLetter(translate("edit"))}</button> : <button onClick={()=>navigate(`/bookCopy/available/${book.id}`)}>{capitalizeFirstLetter(translate("checkAvailability"))}</button>}
             </ul>
         </div>
     );

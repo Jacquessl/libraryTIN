@@ -1,6 +1,8 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddEmployeeDTO;
+import com.example.demo.Entity.DTO.ChangePassword;
+import com.example.demo.Entity.DTO.EditEmployeeDTO;
 import com.example.demo.Entity.Employee;
 import com.example.demo.Service.EmployeeService;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +53,11 @@ public class EmployeeController {
         return employeeService.deleteEmployee(id);
     }
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Employee> editEmployee(@PathVariable int id, @RequestBody AddEmployeeDTO employee){
+    public ResponseEntity<Employee> editEmployee(@PathVariable int id, @RequestBody EditEmployeeDTO employee){
         return employeeService.editEmployee(id, employee);
+    }
+    @PutMapping("/edit/changePassword/{id}")
+    public ResponseEntity<Employee> changePassword(@PathVariable int id, @RequestBody ChangePassword newPassword, Authentication authentication){
+        return employeeService.changePassword(id, newPassword, authentication);
     }
 }
