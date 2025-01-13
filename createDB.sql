@@ -134,3 +134,34 @@ INSERT INTO reservations (user_id, book_id, reservation_date, status) VALUES
 (1, 5, '2023-12-01 10:30:00', 'Pending'),
 (2, 6, '2023-12-02 14:00:00', 'Completed');
 
+INSERT INTO book_copies (book_id, condition_status, available) VALUES
+    (1, 'Good', TRUE),
+    (1, 'New', TRUE),
+    (2, 'Good', TRUE),
+    (2, 'New', TRUE),
+    (3, 'Good', TRUE),
+    (3, 'New', TRUE),
+    (4, 'Good', TRUE),
+    (4, 'New', TRUE),
+    (4, 'Good', TRUE),
+    (3, 'New', TRUE),
+    (2, 'New', TRUE),
+    (1, 'Good', TRUE),
+    (1, 'New', TRUE),
+    (2, 'New', TRUE),
+    (3, 'Good', TRUE),
+    (4, 'New', TRUE),
+    (4, 'New', TRUE),
+    (3, 'Good', TRUE),
+    (2, 'New', TRUE);
+
+INSERT INTO authors (first_name, last_name) VALUES
+    ('Neil', 'Gaiman'),
+    ('Terry', 'Pratchett');
+
+INSERT INTO books (title, category_id, published_year, isbn) VALUES
+    ('Good Omens', 1, 1990, '978-0552137034');
+
+INSERT INTO book_authors (book_id, author_id) VALUES
+    (5, 5),  -- Neil Gaiman
+    (5, 6);  -- Terry Pratchett
