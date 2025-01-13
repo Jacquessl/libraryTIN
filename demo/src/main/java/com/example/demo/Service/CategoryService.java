@@ -3,7 +3,6 @@ package com.example.demo.Service;
 import com.example.demo.Entity.Book;
 import com.example.demo.Entity.Category;
 import com.example.demo.Entity.DTO.AddCategoryDTO;
-import com.example.demo.Entity.DTO.BookDTO;
 import com.example.demo.Entity.DTO.CategoryDTO;
 import com.example.demo.Repository.BookRepositoryInterface;
 import com.example.demo.Repository.CategoryRepositoryInterface;

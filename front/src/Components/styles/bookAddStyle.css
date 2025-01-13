@@ -2,7 +2,7 @@
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
-    background: #2c3e50; /* Dopasowanie do navbaru */
+    background: #2c3e50;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     font-family: Arial, sans-serif;
@@ -38,24 +38,21 @@ input[type="number"]:focus {
     outline: none;
 }
 
-/* Stylizacja listy autorów */
 fieldset {
     border: 1px solid #ccc;
     padding: 15px;
     border-radius: 4px;
     background: #34495e;
     color: white;
-    max-height: 150px; /* Ograniczenie wysokości */
-    overflow-y: auto; /* Pozwala przewijać po przekroczeniu wysokości */
+    max-height: 150px;
+    overflow-y: auto;
 }
 
-/* Nagłówek listy autorów */
 legend {
     font-size: 16px;
     font-weight: bold;
 }
 
-/* Stylizacja checkboxów autorów */
 fieldset label {
     display: flex;
     align-items: center;
@@ -65,14 +62,12 @@ fieldset label {
     padding: 5px;
 }
 
-/* Checkboxy */
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: #f39c12;
 }
 
-/* Stylizacja scrollbar'a (opcjonalnie dla lepszego wyglądu) */
 fieldset::-webkit-scrollbar {
     width: 8px;
 }
@@ -86,7 +81,6 @@ fieldset::-webkit-scrollbar-track {
     background: #2c3e50;
 }
 
-/* Stylizacja przycisku zapisu */
 button {
     background: #f39c12;
     color: white;
@@ -123,7 +117,6 @@ input:invalid, select:invalid {
     border: 1px solid #ff6b6b;
 }
 
-/* Stylizacja listy kategorii */
 select {
     padding: 10px;
     font-size: 14px;
@@ -135,4 +128,22 @@ select {
 select:focus {
     border-color: #f39c12;
     outline: none;
+}
+.add-author-button {
+    background: #f39c12;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.add-author-button:hover {
+    background: #e67e22;
 }

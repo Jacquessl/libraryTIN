@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {LanguageContext} from "../LanguageAppContext";
 import {fetchBooksContaingName} from "../Service/BookService";
 import {AuthContext} from "./AuthContext";
-import './style.css';
+import './styles/style.css';
 
 export const AllExceptEmployeesNavbar = () => {
     const [query, setQuery] = useState("");
@@ -58,7 +58,7 @@ export const AllExceptEmployeesNavbar = () => {
                             onFocus={() => setShowResults(true)}
                             onBlur={() => setTimeout(() => setShowResults(false), 200)}
                         />
-                        <button className="search-button" type="submit">
+                        <button onClick={()=>navigate("/books", {state:{bookTitle:query}})} className="search-button" type="submit">
                             {capitalizeFirstLetter(translate("search"))}
                         </button>
 

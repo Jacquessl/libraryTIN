@@ -1,0 +1,86 @@
+.loans-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #2c3e50;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.loans-title {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #f39c12;
+}
+
+.loans-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.loan-item {
+    background: #34495e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.loan-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background: #2c3e50;
+}
+
+.loan-item p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: white;
+}
+
+.loan-item button {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 10px;
+}
+
+.loan-item button:hover {
+    background-color: #e67e22;
+}
+
+.history-button {
+    display: block;
+    margin: 20px auto;
+    background: #f39c12;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    width: fit-content;
+}
+
+.history-button:hover {
+    background: #e67e22;
+}

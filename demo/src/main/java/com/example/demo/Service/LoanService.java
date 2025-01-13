@@ -4,7 +4,6 @@ import com.example.demo.Config.UserInfoDetails;
 import com.example.demo.Entity.*;
 import com.example.demo.Entity.DTO.AddLoanDTO;
 import com.example.demo.Entity.DTO.LoanDTO;
-import com.example.demo.Entity.DTO.ReservationDTO;
 import com.example.demo.Enums.ReservationStatus;
 import com.example.demo.Repository.*;
 import org.springframework.http.ResponseEntity;

@@ -10,7 +10,6 @@ import {AuthProvider} from "./Components/AuthContext";
 import {Books} from "./Components/Books";
 import {Category} from "./Components/Category";
 import {BookCopy} from "./Components/BookCopy";
-import {RegisterForm} from "./Components/RegisterForm";
 import {BookCopyAvailable} from "./Components/BookCopyAvailable";
 import {Users} from "./Components/Users";
 import {Reservations} from "./Components/Reservations";
@@ -19,22 +18,26 @@ import {AddUserByEmployee} from "./Components/AddUserByEmployee";
 import {ReservationHistory} from "./Components/ReservationHistory";
 import {LoanHistory} from "./Components/LoanHistory";
 import {AddOrEditBook} from "./Components/AddOrEditBook";
+import {ChangePassword} from "./Components/ChangePassword";
+import {AddAuthor} from "./Components/AddAuthor";
 
 function App() {
   return (
-      <LangugeProvider>
+      <div className="app-container">
+        <LangugeProvider>
           <AuthProvider>
             <BrowserRouter>
-              <Navbar/>
+              <div className="main-content">
+
+                <Navbar/>
                 <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />}/>
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/books" element={<Books />}/>
-                    <Route path="/categories" element={<Category />}/>
-                    <Route path="/book" element={<AddOrEditBook />}/>
-                    <Route path="/bookCopy" element={<BookCopy/>}/>
-                  <Route path="/register" element={<RegisterForm/>}/>
+                  <Route path="/" element={<Home/>}/>
+                  <Route path="/login" element={<Login/>}/>
+                  <Route path="/profile" element={<Profile/>}/>
+                  <Route path="/books" element={<Books/>}/>
+                  <Route path="/categories" element={<Category/>}/>
+                  <Route path="/book" element={<AddOrEditBook/>}/>
+                  <Route path="/bookCopy" element={<BookCopy/>}/>
                   <Route path="/bookCopy/available/:id" element={<BookCopyAvailable/>}/>
                   <Route path="/users" element={<Users/>}/>
                   <Route path="/reservations" element={<Reservations/>}/>
@@ -42,12 +45,16 @@ function App() {
                   <Route path="/addUser" element={<AddUserByEmployee/>}/>
                   <Route path="/reservationHistory" element={<ReservationHistory/>}/>
                   <Route path="/loanHistory" element={<LoanHistory/>}/>
+                  <Route path="/changePassword" element={<ChangePassword/>}/>
+                  <Route path="/addAuthor" element={<AddAuthor/>}/>
                 </Routes>
-              <Footer/>
+                <Footer/>
+              </div>
             </BrowserRouter>
           </AuthProvider>
-      </LangugeProvider>
-  );
-}
+        </LangugeProvider>
+      </div>
+        );
+        }
 
-export default App;
+        export default App;

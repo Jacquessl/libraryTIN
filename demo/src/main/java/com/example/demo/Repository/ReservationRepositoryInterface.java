@@ -1,6 +1,5 @@
 package com.example.demo.Repository;
 
-import com.example.demo.Entity.Book;
 import com.example.demo.Entity.BookCopy;
 import com.example.demo.Entity.Reservation;
 import com.example.demo.Entity.User;

@@ -4,7 +4,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {LanguageContext} from "../LanguageAppContext";
 import {fetchCancelReservation, fetchReservationsFromApi} from "../Service/ReservationService";
 import {fetchCreateLoan} from "../Service/LoanService";
-
+import "./styles/Reservations.css"
 export const Reservations = () => {
     const {isEmployee, logout} = useContext(AuthContext);
     const location = useLocation();
@@ -67,17 +67,24 @@ export const Reservations = () => {
     function capitalizeFirstLetter(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     }
-    return(<div>
-        <ul>{isEmployee && reservations.map((reservation)=>(
-        <li key={reservation.id}>
-            <p>{reservation.user.firstName} {reservation.user.lastName}</p>
-            <p>{capitalizeFirstLetter(translate("title"))}: {reservation.bookCopy.book.title}</p>
-            <p>{capitalizeFirstLetter(translate("reservationDate"))}: {new Date(reservation.reservationDate).toLocaleDateString("pl-PL")}</p>
-            <p>{capitalizeFirstLetter(translate("status"))}: {reservation.status}</p>
-            <button onClick={() => createLoan(reservation)}>{translate("loan")}</button>
-            <button onClick={()=>cancelReservation(reservation.id)}>{translate("cancel")}</button>
-        </li>
-        ))}
-        </ul>
-    <button onClick={()=>navigate("/reservationHistory")}></button></div>)
+    return (
+        <div className="reservations-container">
+            <h2 className="reservations-title">{capitalizeFirstLetter(translate("reservations"))}</h2>
+            <ul className="reservations-list">
+                {isEmployee && reservations.map((reservation) => (
+                    <li key={reservation.id} className="reservation-item">
+                        <p>{reservation.user.firstName} {reservation.user.lastName}</p>
+                        <p>{capitalizeFirstLetter(translate("title"))}: {reservation.bookCopy.book.title}</p>
+                        <p>{capitalizeFirstLetter(translate("reservationDate"))}: {new Date(reservation.reservationDate).toLocaleDateString("pl-PL")}</p>
+                        <p>{capitalizeFirstLetter(translate("status"))}: {reservation.status}</p>
+                        <button onClick={() => createLoan(reservation)}>{translate("loan")}</button>
+                        <button onClick={() => cancelReservation(reservation.id)}>{translate("cancel")}</button>
+                    </li>
+                ))}
+            </ul>
+            <button className="history-button" onClick={() => navigate("/reservationHistory")}>
+                {capitalizeFirstLetter(translate("history"))}
+            </button>
+        </div>
+    );
 }

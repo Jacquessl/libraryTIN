@@ -2,24 +2,32 @@ package com.example.demo.Service;
 
 import com.example.demo.Config.UserInfoDetails;
 import com.example.demo.Entity.DTO.AddEmployeeDTO;
+import com.example.demo.Entity.DTO.ChangePassword;
+import com.example.demo.Entity.DTO.EditEmployeeDTO;
 import com.example.demo.Entity.Employee;
+import com.example.demo.Enums.Role;
 import com.example.demo.Repository.EmployeeRepositoryInterface;
 import com.example.demo.Repository.UserRepositoryInterface;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeRepositoryInterface employeeRepository;
     private final UserRepositoryInterface userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public EmployeeService(EmployeeRepositoryInterface employeeRepository, UserRepositoryInterface userRepository) {
+    public EmployeeService(EmployeeRepositoryInterface employeeRepository, UserRepositoryInterface userRepository, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -51,8 +59,12 @@ public class EmployeeService {
             employeeToAdd.setPosition(employee.getPosition());
             employeeToAdd.setEmail(employee.getEmail());
             employeeToAdd.setPasswordHash(employee.getPassword());
-            employeeToAdd.setRole(employee.getRole());
-            employeeToAdd.setHireDate(employee.getHireDate());
+            if(employee.getPosition().toLowerCase().equals("librarian")) {
+                employeeToAdd.setRole(Role.librarian);
+            }else{
+                employeeToAdd.setRole(Role.manager);
+            }
+            employeeToAdd.setHireDate(LocalDateTime.now());
             employeeToAdd.setPhone(employee.getPhone());
             employeeToAdd.setUsername(employee.getUsername());
             Employee addedEmployee = employeeRepository.save(employeeToAdd);
@@ -67,8 +79,8 @@ public class EmployeeService {
         }
         return ResponseEntity.notFound().build();
     }
-    public ResponseEntity<Employee> editEmployee(int id, AddEmployeeDTO employeeDTO) {
-        if(userRepository.findUserByUsernameOrEmail(employeeDTO.getUsername(), employeeDTO.getEmail()) == null) {
+    public ResponseEntity<Employee> editEmployee(int id, EditEmployeeDTO employeeDTO) {
+        if(userRepository.findUserByUsernameOrEmail(employeeDTO.getUsername(), employeeDTO.getEmail()).isEmpty() && employeeRepository.findEmployeeByUsernameOrEmail(employeeDTO.getUsername(), employeeDTO.getEmail()).isEmpty()) {
 
             if (employeeRepository.existsById(id)) {
                 Employee employeeToEdit = employeeRepository.findById(id).get();
@@ -76,9 +88,11 @@ public class EmployeeService {
                 employeeToEdit.setLastName(employeeDTO.getLastName());
                 employeeToEdit.setPosition(employeeDTO.getPosition());
                 employeeToEdit.setEmail(employeeDTO.getEmail());
-                employeeToEdit.setPasswordHash(employeeDTO.getPassword());
-                employeeToEdit.setRole(employeeDTO.getRole());
-                employeeToEdit.setHireDate(employeeDTO.getHireDate());
+                if(employeeDTO.getPosition().toLowerCase().equals("librarian")) {
+                    employeeToEdit.setRole(Role.librarian);
+                }else{
+                    employeeToEdit.setRole(Role.manager);
+                }
                 employeeToEdit.setPhone(employeeDTO.getPhone());
                 employeeToEdit.setUsername(employeeDTO.getUsername());
                 Employee updatedEmployee = employeeRepository.save(employeeToEdit);
@@ -87,5 +101,24 @@ public class EmployeeService {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+    public ResponseEntity<Employee> changePassword(int id, ChangePassword newPassword, Authentication authentication){
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserInfoDetails uid) {
+            try {
+                if((!employeeRepository.findEmployeeByUsername(uid.getUsername()).getPosition().toLowerCase().equals("manager")) && !employeeRepository.findEmployeeByUsername(uid.getUsername()).getEmployeeId().equals(id)){
+                    return ResponseEntity.status(500).build();
+                }
+            }catch(NullPointerException e){
+                return ResponseEntity.ok().build();
+            }
+        }
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isPresent()) {
+            employee.get().setPasswordHash(passwordEncoder.encode(newPassword.getNewPassword()));
+            Employee updatedEmployee = employeeRepository.save(employee.get());
+            return ResponseEntity.ok(updatedEmployee);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

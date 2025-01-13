@@ -2,6 +2,7 @@ package com.example.demo.Service;
 
 import com.example.demo.Config.UserInfoDetails;
 import com.example.demo.Entity.DTO.AddUserDTO;
+import com.example.demo.Entity.DTO.EditUserDTO;
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.EmployeeRepositoryInterface;
 import com.example.demo.Repository.LoanRepositoryInterface;
@@ -72,19 +73,20 @@ public class UserService {
         if (user.isPresent()) {
             if(loanRepository.findAllByUser(user.get()).isEmpty()) {
                 userRepository.deleteById(id);
+                return ResponseEntity.ok().build();
             }
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.badRequest().build();
     }
-    public ResponseEntity<User> updateUser(int id, AddUserDTO userDTO) {
-        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).isEmpty()) {
+    public ResponseEntity<User> updateUser(int id, EditUserDTO userDTO) {
+        Optional<User> userCheck = userRepository.findUserByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail());
+        if(employeeRepository.findEmployeeByUsernameOrEmail(userDTO.getUsername(), userDTO.getEmail()).isEmpty() && userCheck.isEmpty() || userCheck.get().getUserId().equals(id)) {
             Optional<User> user = userRepository.findById(id);
             if (user.isPresent()) {
                 user.get().setFirstName(userDTO.getFirstName());
                 user.get().setLastName(userDTO.getLastName());
                 user.get().setUsername(userDTO.getUsername());
-                user.get().setPasswordHash(passwordEncoder.encode(userDTO.getPassword()));
                 user.get().setEmail(userDTO.getEmail());
                 user.get().setPhone(userDTO.getPhone());
                 User updatedUser = userRepository.save(user.get());
@@ -93,5 +95,26 @@ public class UserService {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+    public ResponseEntity<User> changePassword(int id, String newPassword, Authentication authentication){
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserInfoDetails uid) {
+            try {
+                if (!userRepository.findUserByUsername(uid.getUsername()).getUserId().equals(id)) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }catch(NullPointerException e){
+                if((employeeRepository.findEmployeeByUsername(uid.getUsername()) == null)){
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        }
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setPasswordHash(passwordEncoder.encode(newPassword));
+            User updatedUser = userRepository.save(user.get());
+            return ResponseEntity.ok(updatedUser);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

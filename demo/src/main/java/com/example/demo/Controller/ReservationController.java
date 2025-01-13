@@ -2,7 +2,6 @@ package com.example.demo.Controller;
 
 import com.example.demo.Entity.DTO.AddReservationDTO;
 import com.example.demo.Entity.DTO.ReservationDTO;
-import com.example.demo.Entity.Reservation;
 import com.example.demo.Enums.ReservationStatus;
 import com.example.demo.Service.ReservationService;
 import org.springframework.http.ResponseEntity;
