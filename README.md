@@ -18,5 +18,5 @@ db settings:<br>
 url=jdbc:mysql://localhost:3306/LibraryDB?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8<br>
 username=root<br>
 password=password<br>
--backend: mvn clean install<br>
+-backend: start<br>
 -frontend: npm start
